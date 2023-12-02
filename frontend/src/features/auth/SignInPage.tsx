@@ -1,4 +1,8 @@
+import { useAuth } from './hooks/UseAuth';
+
 export const SignInPage = () => {
+  const { openSignUpPage } = useAuth();
+
   return (
     <>
       <h2 className='text-3xl font-semibold mb-2'>Sign in</h2>
@@ -35,7 +39,10 @@ export const SignInPage = () => {
 
       <div className='flex justify-center mt-2'>
         <span>Not registered yet?</span>
-        <div className='flex items-center cursor-pointer group'>
+        <div
+          className='flex items-center cursor-pointer group'
+          onClick={openSignUpPage}
+        >
           <span className='text-blue-600 mx-1'>Create an account</span>
           <svg
             className='w-3 h-3 text-blue-600 group-hover:translate-x-1 group-hover:transition-transform'

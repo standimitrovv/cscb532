@@ -1,4 +1,8 @@
+import { useAuth } from './hooks/UseAuth';
+
 export const SignUpPage = () => {
+  const { openSignInPage } = useAuth();
+
   return (
     <>
       <h2 className='text-3xl font-semibold mb-2'>Sign up</h2>
@@ -41,6 +45,31 @@ export const SignUpPage = () => {
           Sign up
         </button>
       </form>
+
+      <div className='flex justify-center mt-2'>
+        <span>Already have an account?</span>
+        <div
+          className='flex items-center cursor-pointer group'
+          onClick={openSignInPage}
+        >
+          <span className='text-blue-600 mx-1'>Sign in</span>
+          <svg
+            className='w-3 h-3 text-blue-600 group-hover:translate-x-1 group-hover:transition-transform'
+            aria-hidden='true'
+            xmlns='http://www.w3.org/2000/svg'
+            fill='none'
+            viewBox='0 0 14 10'
+          >
+            <path
+              stroke='currentColor'
+              stroke-linecap='round'
+              stroke-linejoin='round'
+              stroke-width='2'
+              d='M1 5h12m0 0L9 1m4 4L9 9'
+            />
+          </svg>
+        </div>
+      </div>
     </>
   );
 };
