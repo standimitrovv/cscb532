@@ -1,3 +1,9 @@
+import { AuthenticationPage } from './features/auth/AuthenticationPage';
+
 export const App: React.FunctionComponent = () => {
-  return <div>Hello world</div>;
+  return (
+    <main>
+      <AuthenticationPage />
+    </main>
+  );
 };
