@@ -16,6 +16,16 @@ public class UserAuthenticationServiceImpl implements UserAuthenticationService 
     //TODO
 
     @Override
+    public boolean register() {
+        return false;
+    }
+
+    @Override
+    public boolean login() {
+        return false;
+    }
+
+    @Override
     public boolean checkIfUsernameExists(String username) {
         return false;
     }

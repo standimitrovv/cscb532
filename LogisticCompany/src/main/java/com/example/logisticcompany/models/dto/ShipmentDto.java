@@ -121,6 +121,10 @@ public class ShipmentDto {
         this.employee = employee;
     }
 
+    private void setDelivered(boolean delivered) {
+        isDelivered = delivered;
+    }
+
     @Override
     public String toString() {
         return "ShipmentDto{" +
