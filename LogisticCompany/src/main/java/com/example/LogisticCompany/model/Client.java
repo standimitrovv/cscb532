@@ -1,10 +1,13 @@
 package com.example.LogisticCompany.model;
 
+import com.example.LogisticCompany.model.shipment.Shipment;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "clients")
@@ -12,12 +15,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class Client {
+public class Client extends Person {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @OneToMany
+    private Set<Shipment> receivedPackages;
 
-    @Column(name="first_name", nullable = false)
-    private String firstName;
+    @OneToMany
+    private Set<Shipment> sentPackages;
 }
