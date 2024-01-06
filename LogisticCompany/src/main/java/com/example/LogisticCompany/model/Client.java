@@ -1,7 +1,11 @@
 package com.example.LogisticCompany.model;
 
 import com.example.LogisticCompany.model.shipment.Shipment;
-import jakarta.persistence.*;
+import com.example.LogisticCompany.model.user.User;
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +21,12 @@ import java.util.Set;
 @Setter
 public class Client extends Person {
 
-    @OneToMany
-    private Set<Shipment> receivedPackages;
+    @OneToOne(mappedBy = "client")
+    private User user;
 
-    @OneToMany
-    private Set<Shipment> sentPackages;
+    @OneToMany(mappedBy = "sender")
+    private Set<Shipment> sentShipments;
+
+    @OneToMany(mappedBy = "receiver")
+    private Set<Shipment> receivedShipments;
 }

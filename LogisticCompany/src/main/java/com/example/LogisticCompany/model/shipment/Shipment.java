@@ -1,9 +1,11 @@
 package com.example.LogisticCompany.model.shipment;
 
 import com.example.LogisticCompany.model.Client;
-import com.example.LogisticCompany.model.employee.Employee;
 import com.example.LogisticCompany.model.Office;
+import com.example.LogisticCompany.model.employee.Employee;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,42 +23,50 @@ import java.time.LocalDate;
 public class Shipment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
-    @Column(nullable = false, name = "delivery_address")
+    @Column(name = "delivery_address", nullable = false, length = 50)
     private String deliveryAddress;
 
     @Column(nullable = false)
+    @Digits(integer = 2, fraction = 1)
     private BigDecimal weight;
 
-    @Column(nullable = false, name = "created_at")
+    @Column(name = "created_at", nullable = false)
+    @JsonFormat(pattern = "YYYY-MM-DD")
     private LocalDate createdAt;
 
-    @Column(nullable = false)
+    // does it make sense to save the delivery fee separately from the shipment cost?
+    // or combine them into 1 column?
+    @Column(name = "delivery_fee", nullable = false)
+    @Digits(integer = 2, fraction = 2)
     private BigDecimal deliveryFee;
 
-    @Column(nullable = false, name = "shipment_cost")
+    @Column(name = "shipment_cost", nullable = false)
+    @Digits(integer = 3, fraction = 2)
     private BigDecimal shipmentCost;
 
-    @Column(name = "shipment_status")
+    @Column(name = "shipment_status", columnDefinition = "ENUM('IN_PROCESS', 'SENT', 'IN_TRANSIT', 'COMPLETED') default 'IN_PROCESS'")
     @Enumerated(EnumType.STRING)
-    private ShipmentStatus shipmentStatus;
+    private ShipmentStatus shipmentStatus = ShipmentStatus.IN_PROCESS;
 
-    @Column(nullable = false, name = "delivery_type")
+    @Column(name = "delivery_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private DeliveryType deliveryType;
 
-    // which employee has processed the shipment
-    @OneToOne
-    private Employee employee;
-
-    // which office is the shipment created from
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="office_id", referencedColumnName = "id")
     private Office office;
 
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="sender_id", referencedColumnName = "id", nullable = false)
     private Client sender;
 
-    @OneToOne
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="receiver_id", referencedColumnName = "id", nullable = false)
     private Client receiver;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="employee_id", referencedColumnName = "id", nullable = false)
+    private Employee employee;
 }

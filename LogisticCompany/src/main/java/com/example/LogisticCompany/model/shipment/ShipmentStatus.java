@@ -1,6 +1,8 @@
 package com.example.LogisticCompany.model.shipment;
 
 public enum ShipmentStatus {
+    IN_PROCESS,
     SENT,
-    RECEIVED
+    IN_TRANSIT,
+    COMPLETED
 }

@@ -8,12 +8,12 @@ public abstract class Person {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, name = "full_name")
+    @Column(name = "full_name", nullable = false, length = 45)
     private String fullName;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 30)
     private String email;
 
-    @Column(nullable = false, name = "phone_number", unique = true)
+    @Column(name = "phone_number", nullable = false, unique = true, length = 10)
     private String phoneNumber;
 }

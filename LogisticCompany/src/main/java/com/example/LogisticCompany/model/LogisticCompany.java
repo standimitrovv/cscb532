@@ -1,10 +1,13 @@
 package com.example.LogisticCompany.model;
 
+import com.example.LogisticCompany.model.employee.Employee;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "logistic_companies")
@@ -13,29 +16,28 @@ import lombok.Setter;
 @Getter
 @Setter
 public class LogisticCompany {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 45)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 50)
     private String address;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 30)
     private String email;
 
-    @Column(nullable = false, name = "phone_number", unique = true)
+    @Column(name = "phone_number", nullable = false, unique = true, length = 10)
     private String phoneNumber;
 
-//    @OneToMany
-//    private Set<Office> offices;
-//
-//    @OneToMany
-//    private Set<Income> incomes;
-//
-//    @OneToMany
-//    private Set<Employee> employees;
+    @OneToMany(mappedBy = "logisticCompany")
+    private Set<Office> offices;
+
+    @OneToMany(mappedBy = "logisticCompany")
+    private Set<Income> incomes;
+
+    @OneToMany(mappedBy = "logisticCompany")
+    private Set<Employee> employees;
 }

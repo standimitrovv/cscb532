@@ -17,21 +17,23 @@ import lombok.Setter;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private int id;
 
-    @Column(nullable = false, name = "user_name")
-    private String userName;
+    @Column(name = "username", nullable = false, length = 15)
+    private String username;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 32)
     private String password;
 
     @Column(name = "user_type", columnDefinition = "ENUM('EMPLOYEE', 'CLIENT') default 'CLIENT'")
     @Enumerated(EnumType.STRING)
     private UserType userType = UserType.CLIENT;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private Employee employee;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "client_id", referencedColumnName = "id")
     private Client client;
 }

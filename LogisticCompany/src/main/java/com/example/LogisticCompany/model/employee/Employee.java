@@ -4,6 +4,7 @@ import com.example.LogisticCompany.model.LogisticCompany;
 import com.example.LogisticCompany.model.Office;
 import com.example.LogisticCompany.model.Person;
 import com.example.LogisticCompany.model.shipment.Shipment;
+import com.example.LogisticCompany.model.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,9 +25,17 @@ public class Employee extends Person {
     @Enumerated(EnumType.STRING)
     private EmployeeType employeeType;
 
-    @ManyToOne
-    private Office office;
+    @OneToOne(mappedBy = "employee")
+    private User user;
 
-    @ManyToMany
-    private Set<Shipment> allRegisteredPackages;
+    @OneToMany(mappedBy = "employee")
+    private Set<Shipment> shipments;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="company_id", referencedColumnName = "id", nullable = false)
+    private LogisticCompany logisticCompany;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name="office_id", referencedColumnName = "id", nullable = false)
+    private Office office;
 }
