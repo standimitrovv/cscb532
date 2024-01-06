@@ -2,10 +2,8 @@ package com.example.LogisticCompany.model;
 
 import com.example.LogisticCompany.model.shipment.Shipment;
 import com.example.LogisticCompany.model.user.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,4 +27,8 @@ public class Client extends Person {
 
     @OneToMany(mappedBy = "receiver")
     private Set<Shipment> receivedShipments;
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "clients")
+    private Set<LogisticCompany> companies;
 }

@@ -40,4 +40,12 @@ public class LogisticCompany {
 
     @OneToMany(mappedBy = "logisticCompany")
     private Set<Employee> employees;
+
+    @ManyToMany
+    @JoinTable(
+            name="company_clients",
+            joinColumns = @JoinColumn(name = "company_id"),
+            inverseJoinColumns = @JoinColumn(name = "client_id")
+    )
+    private Set<Client> clients;
 }
