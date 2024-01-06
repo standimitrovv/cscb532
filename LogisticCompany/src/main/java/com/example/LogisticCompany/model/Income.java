@@ -1,6 +1,6 @@
 package com.example.LogisticCompany.model;
 
-import com.example.LogisticCompany.model.common.Months;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import lombok.AllArgsConstructor;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "incomes")
@@ -21,9 +22,9 @@ public class Income {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "for_month", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Months forMonth;
+    @Column(name = "for_date", nullable = false)
+    @JsonFormat(pattern = "YYYY-MM-DD")
+    private LocalDate forDate;
 
     @Digits(integer = 10, fraction = 2)
     @Column(nullable = false)
