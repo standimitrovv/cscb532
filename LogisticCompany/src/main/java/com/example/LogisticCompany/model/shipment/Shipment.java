@@ -36,8 +36,6 @@ public class Shipment {
     @JsonFormat(pattern = "YYYY-MM-DD")
     private LocalDate createdAt;
 
-    // does it make sense to save the delivery fee separately from the shipment cost?
-    // or combine them into 1 column?
     @Column(name = "delivery_fee", nullable = false)
     @Digits(integer = 2, fraction = 2)
     private BigDecimal deliveryFee;
