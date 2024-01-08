@@ -1,5 +1,6 @@
-package com.example.LogisticCompany.dto;
+package com.example.LogisticCompany.dto.employee;
 
+import com.example.LogisticCompany.dto.person.PersonDtoResponse;
 import com.example.LogisticCompany.model.employee.EmployeeType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.example.LogisticCompany.service;
 
-import com.example.LogisticCompany.dto.EmployeeDto;
-import com.example.LogisticCompany.dto.EmployeeDtoResponse;
+import com.example.LogisticCompany.dto.employee.EmployeeDto;
+import com.example.LogisticCompany.dto.employee.EmployeeDtoResponse;
 
 public interface EmployeeService {
 

@@ -1,7 +1,7 @@
 package com.example.LogisticCompany.controller;
 
-import com.example.LogisticCompany.dto.EmployeeDto;
-import com.example.LogisticCompany.dto.EmployeeDtoResponse;
+import com.example.LogisticCompany.dto.employee.EmployeeDto;
+import com.example.LogisticCompany.dto.employee.EmployeeDtoResponse;
 import com.example.LogisticCompany.service.implementation.EmployeeServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

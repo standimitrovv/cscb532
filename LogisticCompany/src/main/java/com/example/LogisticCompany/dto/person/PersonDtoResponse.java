@@ -1,4 +1,4 @@
-package com.example.LogisticCompany.dto;
+package com.example.LogisticCompany.dto.person;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

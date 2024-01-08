@@ -1,4 +1,4 @@
-package com.example.LogisticCompany.dto;
+package com.example.LogisticCompany.dto.person;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

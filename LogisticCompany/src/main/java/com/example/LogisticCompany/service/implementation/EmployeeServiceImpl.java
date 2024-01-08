@@ -1,7 +1,7 @@
 package com.example.LogisticCompany.service.implementation;
 
-import com.example.LogisticCompany.dto.EmployeeDto;
-import com.example.LogisticCompany.dto.EmployeeDtoResponse;
+import com.example.LogisticCompany.dto.employee.EmployeeDto;
+import com.example.LogisticCompany.dto.employee.EmployeeDtoResponse;
 import com.example.LogisticCompany.repository.EmployeeRepository;
 import com.example.LogisticCompany.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
