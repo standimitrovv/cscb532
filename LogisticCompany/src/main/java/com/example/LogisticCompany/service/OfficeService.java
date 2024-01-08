@@ -3,9 +3,11 @@ package com.example.LogisticCompany.service;
 import com.example.LogisticCompany.dto.office.OfficeDto;
 import com.example.LogisticCompany.dto.office.OfficeDtoResponse;
 
+import java.util.List;
+
 public interface OfficeService {
 
-    OfficeDtoResponse getAllOffices();
+    List<OfficeDtoResponse> getAllOffices();
 
     OfficeDtoResponse getOffice(int officeId);
 

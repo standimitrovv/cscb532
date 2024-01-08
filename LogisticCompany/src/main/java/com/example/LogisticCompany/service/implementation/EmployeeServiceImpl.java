@@ -7,6 +7,8 @@ import com.example.LogisticCompany.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
@@ -16,7 +18,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.employeeRepository = employeeRespository;
     }
 
-    public EmployeeDtoResponse getAllEmployees() {
+    public List<EmployeeDtoResponse> getAllEmployees() {
         return null;
     }
 

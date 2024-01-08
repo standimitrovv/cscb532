@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/offices")
 public class OfficeController {
@@ -18,7 +20,7 @@ public class OfficeController {
     public OfficeController(OfficeServiceImpl officeService){ this.officeService = officeService; }
 
     @GetMapping
-    public OfficeDtoResponse getAllOffices(){
+    public List<OfficeDtoResponse> getAllOffices(){
         return this.officeService.getAllOffices();
     }
 

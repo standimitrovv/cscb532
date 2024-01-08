@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/logisticCompanies")
 public class LogisticCompanyController {
@@ -20,7 +22,7 @@ public class LogisticCompanyController {
     }
 
     @GetMapping
-    public LogisticCompanyDtoResponse getAllLogisticCompanies(){
+    public List<LogisticCompanyDtoResponse> getAllLogisticCompanies(){
         return this.logisticCompanyService.getAllLogisticCompanies();
     };
 

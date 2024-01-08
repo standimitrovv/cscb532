@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/clients")
 public class ClientController {
@@ -17,7 +19,7 @@ public class ClientController {
     }
 
     @GetMapping
-    public ClientDtoResponse getAllClients() {
+    public List<ClientDtoResponse> getAllClients() {
         return this.clientService.getAllClients();
     }
 
@@ -32,7 +34,7 @@ public class ClientController {
     }
 
     @PatchMapping("/{clientId}")
-    public ClientDtoResponse updateClient(@PathVariable int clientId, ClientDto clientDto) {
+    public ClientDtoResponse updateClient(@PathVariable int clientId, @RequestBody @Valid ClientDto clientDto) {
         return this.clientService.updateClient(clientId, clientDto);
     }
 

@@ -7,6 +7,8 @@ import com.example.LogisticCompany.service.OfficeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class OfficeServiceImpl implements OfficeService {
 
@@ -17,7 +19,7 @@ public class OfficeServiceImpl implements OfficeService {
         this.officeRepository = officeRepository;
     }
 
-    public OfficeDtoResponse getAllOffices() {
+    public List<OfficeDtoResponse> getAllOffices() {
         return null;
     }
 

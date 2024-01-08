@@ -7,6 +7,8 @@ import com.example.LogisticCompany.service.LogisticCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LogisticCompanyServiceImpl implements LogisticCompanyService {
     private final LogisticCompanyRepository logisticCompanyRepository;
@@ -16,7 +18,7 @@ public class LogisticCompanyServiceImpl implements LogisticCompanyService {
         this.logisticCompanyRepository = logisticCompanyRepository;
     }
 
-    public LogisticCompanyDtoResponse getAllLogisticCompanies() {
+    public List<LogisticCompanyDtoResponse> getAllLogisticCompanies() {
         return null;
     }
 

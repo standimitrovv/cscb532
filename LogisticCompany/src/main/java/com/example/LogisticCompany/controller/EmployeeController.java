@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
@@ -17,7 +19,7 @@ public class EmployeeController {
     public EmployeeController(EmployeeServiceImpl employeeService){ this.employeeService = employeeService; }
 
     @GetMapping
-    public EmployeeDtoResponse getAllEmployees(){
+    public List<EmployeeDtoResponse> getAllEmployees(){
          return this.employeeService.getAllEmployees();
     }
 

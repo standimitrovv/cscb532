@@ -3,9 +3,11 @@ package com.example.LogisticCompany.service;
 import com.example.LogisticCompany.dto.client.ClientDto;
 import com.example.LogisticCompany.dto.client.ClientDtoResponse;
 
+import java.util.List;
+
 public interface ClientService {
 
-    ClientDtoResponse getAllClients();
+    List<ClientDtoResponse> getAllClients();
 
     ClientDtoResponse getClient(int clientId);
 
