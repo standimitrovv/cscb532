@@ -36,7 +36,7 @@ public class ShipmentDtoResponse {
 
     private BigDecimal shipmentCost;
 
-    private ShipmentStatus shipmentStatus = ShipmentStatus.IN_PROCESS;
+    private ShipmentStatus shipmentStatus;
 
     private DeliveryType deliveryType;
 

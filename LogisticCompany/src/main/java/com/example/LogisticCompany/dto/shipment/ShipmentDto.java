@@ -43,7 +43,7 @@ public class ShipmentDto {
     private BigDecimal shipmentCost;
 
     @Enumerated(EnumType.STRING)
-    private ShipmentStatus shipmentStatus = ShipmentStatus.IN_PROCESS;
+    private ShipmentStatus shipmentStatus;
 
     @NotNull(message = "The 'deliveryType' field cannot be null!")
     @Enumerated(EnumType.STRING)
