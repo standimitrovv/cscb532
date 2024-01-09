@@ -1,6 +1,6 @@
 package com.example.LogisticCompany.model.employee;
 
-import com.example.LogisticCompany.model.LogisticCompany;
+import com.example.LogisticCompany.model.logisticCompany.LogisticCompany;
 import com.example.LogisticCompany.model.Office;
 import com.example.LogisticCompany.model.Person;
 import com.example.LogisticCompany.model.shipment.Shipment;

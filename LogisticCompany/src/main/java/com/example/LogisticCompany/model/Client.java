@@ -1,5 +1,6 @@
 package com.example.LogisticCompany.model;
 
+import com.example.LogisticCompany.model.logisticCompany.LogisticCompany;
 import com.example.LogisticCompany.model.shipment.Shipment;
 import com.example.LogisticCompany.model.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;

@@ -1,5 +1,6 @@
 package com.example.LogisticCompany.model;
 
+import com.example.LogisticCompany.model.logisticCompany.LogisticCompany;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;

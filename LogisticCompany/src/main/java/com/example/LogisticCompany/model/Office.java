@@ -1,6 +1,7 @@
 package com.example.LogisticCompany.model;
 
 import com.example.LogisticCompany.model.employee.Employee;
+import com.example.LogisticCompany.model.logisticCompany.LogisticCompany;
 import com.example.LogisticCompany.model.shipment.Shipment;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
