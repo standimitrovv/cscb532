@@ -2,6 +2,7 @@ package com.example.LogisticCompany.dto.office;
 
 import com.example.LogisticCompany.dto.employee.EmployeeDtoResponse;
 import com.example.LogisticCompany.dto.logisticCompany.LogisticCompanyDtoResponse;
+import com.example.LogisticCompany.dto.shipment.ShipmentDtoResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,7 @@ public class OfficeDtoResponse {
 
     private Set<EmployeeDtoResponse> employees;
 
-//    private Set<ShipmentDtoResponse> shipments;
+    private Set<ShipmentDtoResponse> shipments;
 
     private LogisticCompanyDtoResponse logisticCompany;
 }

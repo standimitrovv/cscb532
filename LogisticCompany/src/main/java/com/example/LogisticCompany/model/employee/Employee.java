@@ -29,7 +29,7 @@ public class Employee extends Person {
     private User user;
 
     @OneToMany(mappedBy = "employee")
-    private Set<Shipment> shipments;
+    private Set<Shipment> allCompanyShipments;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="company_id", referencedColumnName = "id", nullable = false)

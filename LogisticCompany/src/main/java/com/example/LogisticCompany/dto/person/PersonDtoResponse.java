@@ -1,5 +1,6 @@
 package com.example.LogisticCompany.dto.person;
 
+import com.example.LogisticCompany.dto.user.UserDtoResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,4 +18,6 @@ public abstract class PersonDtoResponse {
     private String email;
 
     private String phoneNumber;
+
+    private UserDtoResponse user;
 }

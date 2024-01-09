@@ -2,11 +2,8 @@ package com.example.LogisticCompany.dto.logisticCompany;
 
 import com.example.LogisticCompany.dto.client.ClientDtoResponse;
 import com.example.LogisticCompany.dto.employee.EmployeeDtoResponse;
-import com.example.LogisticCompany.model.Client;
-import com.example.LogisticCompany.model.Income;
-import com.example.LogisticCompany.model.Office;
-import com.example.LogisticCompany.model.employee.Employee;
-import jakarta.persistence.*;
+import com.example.LogisticCompany.dto.income.IncomeDtoResponse;
+import com.example.LogisticCompany.dto.office.OfficeDtoResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,10 +26,10 @@ public class LogisticCompanyDtoResponse {
 
     private String phoneNumber;
 
-//    private Set<OfficeDtoResponse> offices;
-//
-//    private Set<IncomeDtoResponse> incomes;
-//
+    private Set<OfficeDtoResponse> offices;
+
+    private Set<IncomeDtoResponse> incomes;
+
     private Set<EmployeeDtoResponse> employees;
 
     private Set<ClientDtoResponse> clients;
