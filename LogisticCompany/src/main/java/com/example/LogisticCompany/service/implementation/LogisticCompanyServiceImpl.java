@@ -2,11 +2,13 @@ package com.example.LogisticCompany.service.implementation;
 
 import com.example.LogisticCompany.dto.logisticCompany.LogisticCompanyDto;
 import com.example.LogisticCompany.dto.logisticCompany.LogisticCompanyDtoResponse;
+import com.example.LogisticCompany.model.logisticCompany.FilterType;
 import com.example.LogisticCompany.repository.LogisticCompanyRepository;
 import com.example.LogisticCompany.service.LogisticCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -22,7 +24,12 @@ public class LogisticCompanyServiceImpl implements LogisticCompanyService {
         return null;
     }
 
-    public LogisticCompanyDtoResponse getLogisticCompany(int companyId) {
+    public LogisticCompanyDtoResponse getLogisticCompany(
+            int companyId,
+            FilterType filterType,
+            LocalDate fromDate,
+            LocalDate toDate
+    ) {
         return null;
     }
 
