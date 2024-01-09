@@ -23,6 +23,13 @@ public class ShipmentController {
     @Autowired
     public ShipmentController(ShipmentServiceImpl shipmentService){ this.shipmentService = shipmentService; }
 
+    /*
+    * Gets all the shipments and allows the user to filter them optionally
+    *
+    * @param employeeId - to filter all the shipments registered by a certain employee
+    * @param shipmentStatus - to filter the shipments by their status (e.g sent but not yet completed)
+    * @param clientId - to filter the shipments by which client they were sent/received
+    * */
     @GetMapping
     public List<ShipmentDtoResponse> getAllShipments(
             @RequestParam(name = "employeeId", required = false) int employeeId,
