@@ -4,6 +4,7 @@ import com.example.LogisticCompany.dto.office.OfficeDto;
 import com.example.LogisticCompany.dto.office.OfficeDtoResponse;
 import com.example.LogisticCompany.dto.shipment.ShipmentDto;
 import com.example.LogisticCompany.dto.shipment.ShipmentDtoResponse;
+import com.example.LogisticCompany.model.shipment.ShipmentStatus;
 import com.example.LogisticCompany.service.implementation.OfficeServiceImpl;
 import com.example.LogisticCompany.service.implementation.ShipmentServiceImpl;
 import jakarta.validation.Valid;
@@ -23,8 +24,12 @@ public class ShipmentController {
     public ShipmentController(ShipmentServiceImpl shipmentService){ this.shipmentService = shipmentService; }
 
     @GetMapping
-    public List<ShipmentDtoResponse> getAllShipments(){
-        return this.shipmentService.getAllShipments();
+    public List<ShipmentDtoResponse> getAllShipments(
+            @RequestParam(name = "employeeId", required = false) int employeeId,
+            @RequestParam(name = "shipmentStatus", required = false) ShipmentStatus shipmentStatus,
+            @RequestParam(name = "clientId", required = false) int clientId
+    ){
+        return this.shipmentService.getAllShipments(employeeId, shipmentStatus, clientId);
     }
 
     @GetMapping("/{shipmentId}")

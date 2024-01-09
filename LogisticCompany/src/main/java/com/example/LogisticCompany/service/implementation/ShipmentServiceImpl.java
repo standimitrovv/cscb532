@@ -2,6 +2,7 @@ package com.example.LogisticCompany.service.implementation;
 
 import com.example.LogisticCompany.dto.shipment.ShipmentDto;
 import com.example.LogisticCompany.dto.shipment.ShipmentDtoResponse;
+import com.example.LogisticCompany.model.shipment.ShipmentStatus;
 import com.example.LogisticCompany.repository.ShipmentRepository;
 import com.example.LogisticCompany.service.ShipmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class ShipmentServiceImpl implements ShipmentService {
         this.shipmentRepository = shipmentRepository;
     }
 
-    public List<ShipmentDtoResponse> getAllShipments() {
+    public List<ShipmentDtoResponse> getAllShipments(int employeeId, ShipmentStatus shipmentStatus, int clientId) {
         return null;
     }
 
