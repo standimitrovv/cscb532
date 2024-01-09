@@ -3,6 +3,7 @@ package com.example.LogisticCompany.service.implementation;
 import com.example.LogisticCompany.dto.user.LoginUserDto;
 import com.example.LogisticCompany.dto.user.RegisterUserDto;
 import com.example.LogisticCompany.dto.user.UserDtoResponse;
+import com.example.LogisticCompany.model.user.UserType;
 import com.example.LogisticCompany.repository.UserRepository;
 import com.example.LogisticCompany.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,10 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserDtoResponse register(RegisterUserDto userDto) {
+        return null;
+    }
+
+    public UserDtoResponse setUserRole(int userId, UserType userType) {
         return null;
     }
 }
