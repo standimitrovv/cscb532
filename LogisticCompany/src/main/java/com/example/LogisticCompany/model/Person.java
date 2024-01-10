@@ -1,8 +1,16 @@
 package com.example.LogisticCompany.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @MappedSuperclass
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public abstract class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

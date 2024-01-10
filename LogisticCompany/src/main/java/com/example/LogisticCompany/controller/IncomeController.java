@@ -37,7 +37,7 @@ public class IncomeController {
         return this.incomeService.createNewIncome(incomeDto);
     }
 
-    @PatchMapping("/{incomeId}")
+    @PutMapping("/{incomeId}")
     public IncomeDtoResponse updateIncome(
             @PathVariable int incomeId,
             @RequestBody @Valid IncomeDto incomeDto

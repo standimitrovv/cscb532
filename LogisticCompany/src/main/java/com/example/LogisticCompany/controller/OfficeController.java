@@ -34,7 +34,7 @@ public class OfficeController {
         return this.officeService.createNewOffice(officeDto);
     }
 
-    @PatchMapping("/{officeId}")
+    @PutMapping("/{officeId}")
     public OfficeDtoResponse updateOffice(
             @PathVariable int officeId,
             @RequestBody @Valid OfficeDto officeDto

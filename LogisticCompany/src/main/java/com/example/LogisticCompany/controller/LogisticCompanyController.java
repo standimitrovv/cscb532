@@ -54,7 +54,7 @@ public class LogisticCompanyController {
         return this.logisticCompanyService.createNewLogisticCompany(logisticCompanyDto);
     };
 
-    @PatchMapping("/{companyId}")
+    @PutMapping("/{companyId}")
     public LogisticCompanyDtoResponse updateLogisticCompany(
             @PathVariable int companyId,
             @RequestBody @Valid LogisticCompanyDto logisticCompanyDto

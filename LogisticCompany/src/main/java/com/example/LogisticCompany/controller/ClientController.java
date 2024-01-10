@@ -33,7 +33,7 @@ public class ClientController {
         return this.clientService.createNewClient(clientDto);
     }
 
-    @PatchMapping("/{clientId}")
+    @PutMapping("/{clientId}")
     public ClientDtoResponse updateClient(@PathVariable int clientId, @RequestBody @Valid ClientDto clientDto) {
         return this.clientService.updateClient(clientId, clientDto);
     }

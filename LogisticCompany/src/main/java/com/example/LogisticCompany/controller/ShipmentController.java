@@ -1,11 +1,8 @@
 package com.example.LogisticCompany.controller;
 
-import com.example.LogisticCompany.dto.office.OfficeDto;
-import com.example.LogisticCompany.dto.office.OfficeDtoResponse;
 import com.example.LogisticCompany.dto.shipment.ShipmentDto;
 import com.example.LogisticCompany.dto.shipment.ShipmentDtoResponse;
 import com.example.LogisticCompany.model.shipment.ShipmentStatus;
-import com.example.LogisticCompany.service.implementation.OfficeServiceImpl;
 import com.example.LogisticCompany.service.implementation.ShipmentServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +46,7 @@ public class ShipmentController {
         return this.shipmentService.createNewShipment(shipmentDto);
     }
 
-    @PatchMapping("/{shipmentId}")
+    @PutMapping("/{shipmentId}")
     public ShipmentDtoResponse updateShipment(
             @PathVariable int shipmentId,
             @RequestBody @Valid ShipmentDto shipmentDto

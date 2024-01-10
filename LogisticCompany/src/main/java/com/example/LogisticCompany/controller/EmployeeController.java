@@ -33,7 +33,7 @@ public class EmployeeController {
          return this.employeeService.createNewEmployee(employeeDto);
     }
 
-    @PatchMapping("/{employeeId}")
+    @PutMapping("/{employeeId}")
     public EmployeeDtoResponse updateEmployee(
             @PathVariable int employeeId,
             @RequestBody @Valid EmployeeDto employeeDto
