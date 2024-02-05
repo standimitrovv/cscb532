@@ -1,41 +1,16 @@
+import { useState } from 'react';
 import { useAuth } from './hooks/UseAuth';
+import { ISignIn } from './state/AuthenticationProvider';
 
-export const SignInPage = () => {
-  const { openSignUpPage } = useAuth();
+export const SignInPage: React.FunctionComponent = () => {
+  const { signIn, openSignUpPage, isProcessing } = useAuth();
 
   return (
     <>
       <h2 className='text-3xl font-semibold mb-2'>Sign in</h2>
       <span>Hi, welcome back! 👋</span>
 
-      <form className='flex flex-col mt-8' onSubmit={(e) => e.preventDefault()}>
-        <label htmlFor='email' className='font-medium'>
-          Email
-        </label>
-        <input
-          type='email'
-          id='email'
-          className='rounded-md py-2 px-3 border mt-1 mb-4'
-          placeholder='E.g johndoe@gmail.com'
-        />
-
-        <label htmlFor='password' className='font-medium'>
-          Password
-        </label>
-        <input
-          type='password'
-          id='password'
-          className='rounded-md py-2 px-3 border mt-1 mb-6'
-          placeholder='Enter your password'
-        />
-
-        <button
-          type='submit'
-          className='bg-blue-600 py-2 rounded-md text-white'
-        >
-          Sign in
-        </button>
-      </form>
+      <SignInForm onSubmit={signIn} isProcessing={isProcessing} />
 
       <div className='flex justify-center mt-2'>
         <span>Not registered yet?</span>
@@ -62,5 +37,62 @@ export const SignInPage = () => {
         </div>
       </div>
     </>
+  );
+};
+
+const SignInForm: React.FunctionComponent<{
+  onSubmit: ISignIn;
+  isProcessing: boolean;
+}> = ({ onSubmit, isProcessing }) => {
+  const [username, setUsername] = useState<string>('');
+
+  const [password, setPassword] = useState<string>('');
+
+  const isSubmitButtonDisabled =
+    !username.trim().length || !password.trim().length || isProcessing;
+
+  const handleFormSubmit = () => {
+    onSubmit({ username, password });
+  };
+
+  return (
+    <form className='flex flex-col mt-8' onSubmit={(e) => e.preventDefault()}>
+      <label htmlFor='username' className='font-medium'>
+        Username
+      </label>
+      <input
+        type='username'
+        id='username'
+        className='rounded-md py-2 px-3 border mt-1 mb-4'
+        placeholder='E.g johndoe'
+        disabled={isProcessing}
+        required
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
+
+      <label htmlFor='password' className='font-medium'>
+        Password
+      </label>
+      <input
+        type='password'
+        id='password'
+        className='rounded-md py-2 px-3 border mt-1 mb-6'
+        placeholder='Enter your password'
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        disabled={isProcessing}
+        required
+      />
+
+      <button
+        type='submit'
+        className='bg-blue-600 py-2 rounded-md text-white'
+        onClick={handleFormSubmit}
+        disabled={isSubmitButtonDisabled}
+      >
+        {isProcessing ? 'Loading...' : 'Sign in'}
+      </button>
+    </form>
   );
 };

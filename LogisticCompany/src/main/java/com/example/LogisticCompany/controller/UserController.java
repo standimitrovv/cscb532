@@ -24,12 +24,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public UserLoginDtoResponse login(@RequestBody @Valid LoginUserDto userDto, HttpServletResponse response){
-        try {
-            return this.userService.login(userDto, response);
-        } catch (AuthenticationException e) {
-            throw new RuntimeException(e);
-        }
+    public UserLoginDtoResponse login(@RequestBody @Valid LoginUserDto userDto){
+        return this.userService.login(userDto);
     }
 
     @PostMapping("/register")

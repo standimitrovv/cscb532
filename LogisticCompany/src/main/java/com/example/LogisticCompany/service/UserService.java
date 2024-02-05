@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.tomcat.websocket.AuthenticationException;
 
 public interface UserService {
-    UserLoginDtoResponse login(LoginUserDto userDto, HttpServletResponse response) throws AuthenticationException;
+    UserLoginDtoResponse login(LoginUserDto userDto);
 
     void register(RegisterUserDto userDto) throws AuthenticationException;
 

@@ -8,14 +8,12 @@ import com.example.LogisticCompany.service.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import jakarta.servlet.http.HttpServletResponse;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -44,27 +42,24 @@ public class UserServiceImpl implements UserService {
         this.modelMapper = new ModelMapper();
     }
 
-    public UserLoginDtoResponse login(LoginUserDto userDto, HttpServletResponse response) throws AuthenticationException {
+    public UserLoginDtoResponse login(LoginUserDto userDto) {
         User user = userRepository.findByUsername(userDto.getUsername())
-                .orElseThrow(() -> new AuthenticationException("User was not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
-        if (passwordEncoder.matches(userDto.getPassword(), user.getPassword())) {
-            String token = generateJwtToken(user.getUsername());
-
-            // set the token in the response header
-            response.setHeader("Authorization", "Bearer " + token);
-
-            UserLoginDtoResponse tempLoginDtoResponse = new UserLoginDtoResponse();
-
-            tempLoginDtoResponse.setUsername(user.getUsername());
-            tempLoginDtoResponse.setToken(token);
-            tempLoginDtoResponse.setEmail(user.getEmail());
-            tempLoginDtoResponse.setUserType(user.getUserType());
-
-            return tempLoginDtoResponse;
-        } else {
-            throw new AuthenticationException("Invalid username or password");
+        if (!passwordEncoder.matches(userDto.getPassword(), user.getPassword())) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Incorrect password");
         }
+
+        String token = generateJwtToken(user.getUsername());
+
+        UserLoginDtoResponse tempLoginDtoResponse = new UserLoginDtoResponse();
+
+        tempLoginDtoResponse.setUsername(user.getUsername());
+        tempLoginDtoResponse.setToken(token);
+        tempLoginDtoResponse.setEmail(user.getEmail());
+        tempLoginDtoResponse.setUserType(user.getUserType());
+
+        return tempLoginDtoResponse;
     }
 
     public void register(RegisterUserDto userDto) throws AuthenticationException {
