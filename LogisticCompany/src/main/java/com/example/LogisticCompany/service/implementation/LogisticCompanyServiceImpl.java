@@ -8,10 +8,13 @@ import com.example.LogisticCompany.repository.LogisticCompanyRepository;
 import com.example.LogisticCompany.service.LogisticCompanyService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LogisticCompanyServiceImpl implements LogisticCompanyService {
@@ -25,7 +28,12 @@ public class LogisticCompanyServiceImpl implements LogisticCompanyService {
     }
 
     public List<LogisticCompanyDtoResponse> getAllLogisticCompanies() {
-        return this.logisticCompanyRepository.findAllLogisticCompanies();
+        List<LogisticCompany> companies = this.logisticCompanyRepository.findAll();
+
+        return companies
+                .stream()
+                .map(c -> modelMapper.map(c, LogisticCompanyDtoResponse.class))
+                .collect(Collectors.toList());
     }
 
     public LogisticCompanyDtoResponse getLogisticCompany(
@@ -34,7 +42,12 @@ public class LogisticCompanyServiceImpl implements LogisticCompanyService {
             LocalDate fromDate,
             LocalDate toDate
     ) {
-        return this.logisticCompanyRepository.findLogisticCompanyById(companyId).get();
+        // TODO: implement the filtering
+
+        LogisticCompany company = this.logisticCompanyRepository.findById(companyId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return modelMapper.map(company, LogisticCompanyDtoResponse.class);
     }
 
     public LogisticCompanyDtoResponse createNewLogisticCompany(LogisticCompanyDto logisticCompanyDto) {
@@ -45,22 +58,23 @@ public class LogisticCompanyServiceImpl implements LogisticCompanyService {
     }
 
     public LogisticCompanyDtoResponse updateLogisticCompany(int companyId, LogisticCompanyDto logisticCompanyDto) {
-        LogisticCompany logisticCompany = this.logisticCompanyRepository.findById(companyId).get();
+        LogisticCompany company = this.logisticCompanyRepository.findById(companyId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        logisticCompany.setName(logisticCompanyDto.getName());
-        logisticCompany.setAddress(logisticCompanyDto.getAddress());
-        logisticCompany.setEmail(logisticCompanyDto.getEmail());
-        logisticCompany.setPhoneNumber(logisticCompany.getPhoneNumber());
+        company.setName(logisticCompanyDto.getName());
+        company.setAddress(logisticCompanyDto.getAddress());
+        company.setEmail(logisticCompanyDto.getEmail());
+        company.setPhoneNumber(company.getPhoneNumber());
 
-        LogisticCompany updatedCompany = logisticCompanyRepository.save(logisticCompany);
+        LogisticCompany updatedCompany = logisticCompanyRepository.save(company);
 
         return modelMapper.map(updatedCompany, LogisticCompanyDtoResponse.class);
     }
 
     public void deleteLogisticCompany(int companyId) {
-        if (logisticCompanyRepository.findById(companyId).isPresent()) {
-            LogisticCompany logisticCompany = logisticCompanyRepository.findById(companyId).get();
-            this.logisticCompanyRepository.delete(logisticCompany);
-        }
+        LogisticCompany company = this.logisticCompanyRepository.findById(companyId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        this.logisticCompanyRepository.delete(company);
     }
 }

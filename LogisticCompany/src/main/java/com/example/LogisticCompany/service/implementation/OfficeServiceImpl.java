@@ -7,9 +7,12 @@ import com.example.LogisticCompany.repository.OfficeRepository;
 import com.example.LogisticCompany.service.OfficeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class OfficeServiceImpl implements OfficeService {
@@ -24,11 +27,19 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     public List<OfficeDtoResponse> getAllOffices() {
-        return this.officeRepository.findAllOffices();
+        List<Office> offices = this.officeRepository.findAll();
+
+        return offices
+                .stream()
+                .map(o -> modelMapper.map(o, OfficeDtoResponse.class))
+                .collect(Collectors.toList());
     }
 
     public OfficeDtoResponse getOffice(int officeId) {
-        return this.officeRepository.findOfficeById(officeId).get();
+        Office office = this.officeRepository.findById(officeId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return modelMapper.map(office, OfficeDtoResponse.class);
     }
 
     public OfficeDtoResponse createNewOffice(OfficeDto officeDto) {
@@ -39,7 +50,8 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     public OfficeDtoResponse updateOffice(int officeId, OfficeDto officeDto) {
-        Office office = this.officeRepository.findById(officeId).get();
+        Office office = this.officeRepository.findById(officeId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         office.setAddress(officeDto.getAddress());
         office.setPhoneNumber(officeDto.getPhoneNumber());
@@ -50,9 +62,9 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     public void deleteOffice(int officeId) {
-        if (officeRepository.findById(officeId).isPresent()) {
-            Office office = officeRepository.findById(officeId).get();
-            this.officeRepository.delete(office);
-        }
+        Office office = this.officeRepository.findById(officeId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        this.officeRepository.delete(office);
     }
 }

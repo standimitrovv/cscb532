@@ -1,11 +1,8 @@
 package com.example.LogisticCompany.service.implementation;
 
-import com.example.LogisticCompany.dto.employee.EmployeeDtoResponse;
-import com.example.LogisticCompany.dto.office.OfficeDtoResponse;
-import com.example.LogisticCompany.dto.user.LoginUserDto;
-import com.example.LogisticCompany.dto.user.RegisterUserDto;
-import com.example.LogisticCompany.dto.user.UserDto;
-import com.example.LogisticCompany.dto.user.UserDtoResponse;
+import com.example.LogisticCompany.dto.shipment.ShipmentDtoResponse;
+import com.example.LogisticCompany.dto.user.*;
+import com.example.LogisticCompany.model.shipment.Shipment;
 import com.example.LogisticCompany.model.user.User;
 import com.example.LogisticCompany.model.user.UserType;
 import com.example.LogisticCompany.repository.UserRepository;
@@ -18,9 +15,10 @@ import org.apache.tomcat.websocket.AuthenticationException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Key;
 import java.util.Date;
@@ -47,30 +45,32 @@ public class UserServiceImpl implements UserService {
         this.modelMapper = new ModelMapper();
     }
 
-    public UserDtoResponse login(LoginUserDto userDto, HttpServletResponse response) throws AuthenticationException {
-        // find user by username
-        User user = userRepository.findByUsername(userDto.getUsername()).get();
+    public UserLoginDtoResponse login(LoginUserDto userDto, HttpServletResponse response) throws AuthenticationException {
+        User user = userRepository.findByUsername(userDto.getUsername())
+                .orElseThrow(() -> new AuthenticationException("User was not found"));
 
-        // check if the user exists and if the password is correct
-        if (user != null && passwordEncoder.matches(userDto.getPassword(), user.getPassword())) {
-            // generate a token
+        if (passwordEncoder.matches(userDto.getPassword(), user.getPassword())) {
             String token = generateJwtToken(user.getUsername());
 
             // set the token in the response header
             response.setHeader("Authorization", "Bearer " + token);
 
-            // return dto
-            return new UserDtoResponse(user.getId(), user.getUsername(), user.getEmail(), user.getUserType(), user.getEmployee(), user.getClient());
+            UserLoginDtoResponse tempLoginDtoResponse = new UserLoginDtoResponse();
+
+            tempLoginDtoResponse.setUsername(user.getUsername());
+            tempLoginDtoResponse.setToken(token);
+            tempLoginDtoResponse.setEmail(user.getEmail());
+            tempLoginDtoResponse.setUserType(user.getUserType());
+
+            return tempLoginDtoResponse;
         } else {
-            // handle invalid login credentials
             throw new AuthenticationException("Invalid username or password");
         }
     }
 
     public void register(RegisterUserDto userDto) throws AuthenticationException {
         // check if the username is already taken
-        if (userRepository.findUserByUsername(userDto.getUsername()).isPresent()) {
-            // if already taken
+        if (userRepository.findByUsername(userDto.getUsername()).isPresent()) {
             throw new AuthenticationException("Username is already taken");
         }
 
@@ -85,7 +85,9 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserDtoResponse setUserRole(int userId, UserType userType) {
-        User user = userRepository.findById(userId).get();
+        User user = this.userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
         user.setUserType(userType);
         userRepository.saveAndFlush(user);
 

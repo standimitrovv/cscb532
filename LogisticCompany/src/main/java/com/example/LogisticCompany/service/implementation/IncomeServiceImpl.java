@@ -1,17 +1,18 @@
 package com.example.LogisticCompany.service.implementation;
 
-import com.example.LogisticCompany.dto.employee.EmployeeDtoResponse;
 import com.example.LogisticCompany.dto.income.IncomeDto;
 import com.example.LogisticCompany.dto.income.IncomeDtoResponse;
 import com.example.LogisticCompany.model.Income;
-import com.example.LogisticCompany.model.employee.Employee;
 import com.example.LogisticCompany.repository.IncomeRepository;
 import com.example.LogisticCompany.service.IncomeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class IncomeServiceImpl implements IncomeService {
@@ -25,11 +26,19 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     public List<IncomeDtoResponse> getAllIncomes() {
-        return this.incomeRepository.findAllIncomes();
+        List<Income> incomes = this.incomeRepository.findAll();
+
+        return incomes
+                .stream()
+                .map(i -> modelMapper.map(i, IncomeDtoResponse.class))
+                .collect(Collectors.toList());
     }
 
     public IncomeDtoResponse getIncome(int incomeId) {
-        return this.incomeRepository.findIncomeById(incomeId).get();
+        Income income = this.incomeRepository.findById(incomeId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return modelMapper.map(income, IncomeDtoResponse.class);
     }
 
     public IncomeDtoResponse createNewIncome(IncomeDto incomeDto) {
@@ -40,7 +49,8 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     public IncomeDtoResponse updateIncome(int incomeId, IncomeDto incomeDto) {
-        Income income = this.incomeRepository.findById(incomeId).get();
+        Income income = this.incomeRepository.findById(incomeId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         income.setAmount(incomeDto.getAmount());
         income.setForDate(incomeDto.getForDate());
@@ -51,9 +61,9 @@ public class IncomeServiceImpl implements IncomeService {
     }
 
     public void deleteIncome(int incomeId) {
-        if (incomeRepository.findById(incomeId).isPresent()) {
-            Income income = incomeRepository.findById(incomeId).get();
-            this.incomeRepository.delete(income);
-        }
+        Income income = this.incomeRepository.findById(incomeId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        this.incomeRepository.delete(income);
     }
 }

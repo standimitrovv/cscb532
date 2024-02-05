@@ -8,9 +8,12 @@ import com.example.LogisticCompany.repository.ShipmentRepository;
 import com.example.LogisticCompany.service.ShipmentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ShipmentServiceImpl implements ShipmentService {
@@ -25,11 +28,19 @@ public class ShipmentServiceImpl implements ShipmentService {
     }
 
     public List<ShipmentDtoResponse> getAllShipments(int employeeId, ShipmentStatus shipmentStatus, int clientId) {
-        return this.shipmentRepository.findAllShipments();
+        List<Shipment> shipments = this.shipmentRepository.findAll();
+
+        return shipments
+                .stream()
+                .map(sh -> modelMapper.map(sh, ShipmentDtoResponse.class))
+                .collect(Collectors.toList());
     }
 
     public ShipmentDtoResponse getShipment(int shipmentId) {
-        return this.shipmentRepository.findShipmentById(shipmentId).get();
+        Shipment shipment = this.shipmentRepository.findById(shipmentId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return modelMapper.map(shipment, ShipmentDtoResponse.class);
     }
 
     public ShipmentDtoResponse createNewShipment(ShipmentDto shipmentDto) {
@@ -40,7 +51,8 @@ public class ShipmentServiceImpl implements ShipmentService {
     }
 
     public ShipmentDtoResponse updateShipment(int shipmentId, ShipmentDto shipmentDto) {
-        Shipment shipment = this.shipmentRepository.findById(shipmentId).get();
+        Shipment shipment = this.shipmentRepository.findById(shipmentId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         shipment.setWeight(shipmentDto.getWeight());
         shipment.setShipmentCost(shipmentDto.getShipmentCost());
@@ -56,9 +68,9 @@ public class ShipmentServiceImpl implements ShipmentService {
     }
 
     public void deleteShipment(int shipmentId) {
-        if (shipmentRepository.findById(shipmentId).isPresent()) {
-            Shipment shipment = this.shipmentRepository.findById(shipmentId).get();
-            this.shipmentRepository.delete(shipment);
-        }
+        Shipment shipment = this.shipmentRepository.findById(shipmentId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        this.shipmentRepository.delete(shipment);
     }
 }

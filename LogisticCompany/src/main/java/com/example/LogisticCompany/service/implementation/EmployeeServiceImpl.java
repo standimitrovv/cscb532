@@ -7,9 +7,12 @@ import com.example.LogisticCompany.repository.EmployeeRepository;
 import com.example.LogisticCompany.service.EmployeeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -23,11 +26,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public List<EmployeeDtoResponse> getAllEmployees() {
-        return this.employeeRepository.findAllEmployees();
+        List<Employee> employees = this.employeeRepository.findAll();
+
+        return employees
+                .stream()
+                .map(e -> modelMapper.map(e, EmployeeDtoResponse.class))
+                .collect(Collectors.toList());
     }
 
     public EmployeeDtoResponse getEmployee(int employeeId) {
-        return this.employeeRepository.findEmployeesById(employeeId).get();
+        Employee e = this.employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return modelMapper.map(e, EmployeeDtoResponse.class);
     }
 
     public EmployeeDtoResponse createNewEmployee(EmployeeDto employeeDto) {
@@ -38,23 +49,23 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public EmployeeDtoResponse updateEmployee(int employeeId, EmployeeDto employeeDto) {
-        Employee employee = this.employeeRepository.findById(employeeId).get();
+        Employee e = this.employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        employee.setEmployeeType(employeeDto.getEmployeeType());
-        employee.setFullName(employeeDto.getFullName());
-        employee.setEmail(employeeDto.getEmail());
-        employee.setPhoneNumber(employeeDto.getPhoneNumber());
+        e.setEmployeeType(employeeDto.getEmployeeType());
+        e.setFullName(employeeDto.getFullName());
+        e.setEmail(employeeDto.getEmail());
+        e.setPhoneNumber(employeeDto.getPhoneNumber());
 
-        Employee updatedEmployee = employeeRepository.save(employee);
+        Employee updatedEmployee = employeeRepository.save(e);
 
         return modelMapper.map(updatedEmployee, EmployeeDtoResponse.class);
-
     }
 
     public void deleteEmployee(int employeeId) {
-        if (employeeRepository.findById(employeeId).isPresent()) {
-            Employee employee = employeeRepository.findById(employeeId).get();
-            this.employeeRepository.delete(employee);
-        }
+        Employee e = this.employeeRepository.findById(employeeId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        this.employeeRepository.delete(e);
     }
 }

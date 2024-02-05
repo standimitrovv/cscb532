@@ -9,9 +9,12 @@ import com.example.LogisticCompany.repository.ClientRepository;
 import com.example.LogisticCompany.service.ClientService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -25,36 +28,46 @@ public class ClientServiceImpl implements ClientService {
     }
 
     public List<ClientDtoResponse> getAllClients() {
-        return this.clientRepository.findAllClients();
+        List<Client> clients = this.clientRepository.findAll();
+
+        return clients
+                .stream()
+                .map(c -> modelMapper.map(c, ClientDtoResponse.class))
+                .collect(Collectors.toList());
     }
 
     public ClientDtoResponse getClient(int clientId) {
-        return this.clientRepository.findClientById(clientId).get();
+        Client c = this.clientRepository.findById(clientId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        return modelMapper.map(c, ClientDtoResponse.class);
     }
 
     public ClientDtoResponse createNewClient(ClientDto clientDto) {
         Client client = modelMapper.map(clientDto, Client.class);
+
         this.clientRepository.saveAndFlush(client);
 
         return modelMapper.map(client, ClientDtoResponse.class);
     }
 
     public ClientDtoResponse updateClient(int clientId, ClientDto clientDto) {
-        Client client = this.clientRepository.findById(clientId).get();
+        Client c = this.clientRepository.findById(clientId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        client.setFullName(clientDto.getFullName());
-        client.setEmail(clientDto.getEmail());
-        client.setPhoneNumber(clientDto.getPhoneNumber());
+        c.setFullName(clientDto.getFullName());
+        c.setEmail(clientDto.getEmail());
+        c.setPhoneNumber(clientDto.getPhoneNumber());
 
-        Client updatedClient = clientRepository.save(client);
+        Client updatedClient = clientRepository.save(c);
 
         return modelMapper.map(updatedClient, ClientDtoResponse.class);
     }
 
     public void deleteClient(int clientId) {
-        if (clientRepository.findById(clientId).isPresent()) {
-            Client client = clientRepository.findById(clientId).get();
-            this.clientRepository.delete(client);
-        }
+        Client c = this.clientRepository.findById(clientId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        this.clientRepository.delete(c);
     }
 }

@@ -3,15 +3,14 @@ package com.example.LogisticCompany.controller;
 import com.example.LogisticCompany.dto.user.LoginUserDto;
 import com.example.LogisticCompany.dto.user.RegisterUserDto;
 import com.example.LogisticCompany.dto.user.UserDtoResponse;
+import com.example.LogisticCompany.dto.user.UserLoginDtoResponse;
 import com.example.LogisticCompany.model.user.UserType;
 import com.example.LogisticCompany.service.implementation.UserServiceImpl;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,7 +24,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public UserDtoResponse login(@RequestBody @Valid LoginUserDto userDto, HttpServletResponse response){
+    public UserLoginDtoResponse login(@RequestBody @Valid LoginUserDto userDto, HttpServletResponse response){
         try {
             return this.userService.login(userDto, response);
         } catch (AuthenticationException e) {
@@ -34,9 +33,10 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public void register(@RequestBody @Valid RegisterUserDto userDto){
+    public ResponseEntity<Void> register(@RequestBody @Valid RegisterUserDto userDto){
         try {
             this.userService.register(userDto);
+            return ResponseEntity.ok().build();
         } catch (AuthenticationException e) {
             throw new RuntimeException(e);
         }
