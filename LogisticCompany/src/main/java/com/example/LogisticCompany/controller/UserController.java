@@ -34,26 +34,12 @@ public class UserController {
     }
 
     @PostMapping
-    public UserDtoResponse register(@RequestBody @Valid RegisterUserDto userDto){
+    public void register(@RequestBody @Valid RegisterUserDto userDto){
         try {
-            return this.userService.register(userDto);
+            this.userService.register(userDto);
         } catch (AuthenticationException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    // adding log out controller
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
-        // check if someone is logged in
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            // logout
-            new SecurityContextLogoutHandler().logout(request, response, authentication);
-        }
-
-        // redirect to the home page
-        return "";
     }
 
     @PatchMapping("/{userId}")

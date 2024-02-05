@@ -10,9 +10,7 @@ import org.apache.tomcat.websocket.AuthenticationException;
 public interface UserService {
     UserDtoResponse login(LoginUserDto userDto, HttpServletResponse response) throws AuthenticationException;
 
-    UserDtoResponse register(RegisterUserDto userDto) throws AuthenticationException;
-
-    void logout(HttpServletResponse response);
+    void register(RegisterUserDto userDto) throws AuthenticationException;
 
     UserDtoResponse setUserRole(int userId, UserType userType);
 }

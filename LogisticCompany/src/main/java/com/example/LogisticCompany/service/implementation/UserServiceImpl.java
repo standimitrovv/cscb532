@@ -1,8 +1,10 @@
 package com.example.LogisticCompany.service.implementation;
 
+import com.example.LogisticCompany.dto.employee.EmployeeDtoResponse;
 import com.example.LogisticCompany.dto.office.OfficeDtoResponse;
 import com.example.LogisticCompany.dto.user.LoginUserDto;
 import com.example.LogisticCompany.dto.user.RegisterUserDto;
+import com.example.LogisticCompany.dto.user.UserDto;
 import com.example.LogisticCompany.dto.user.UserDtoResponse;
 import com.example.LogisticCompany.model.user.User;
 import com.example.LogisticCompany.model.user.UserType;
@@ -65,16 +67,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public void logout(HttpServletResponse response) {
-        // invalidate the current security context
-        SecurityContextHolder.clearContext();
-
-        // send a response for the logout
-        response.setStatus(HttpServletResponse.SC_OK);
-        response.setHeader("Logout-Success", "true");
-    }
-
-    public UserDtoResponse register(RegisterUserDto userDto) throws AuthenticationException {
+    public void register(RegisterUserDto userDto) throws AuthenticationException {
         // check if the username is already taken
         if (userRepository.findUserByUsername(userDto.getUsername()).isPresent()) {
             // if already taken
@@ -84,13 +77,11 @@ public class UserServiceImpl implements UserService {
         // encode the password before saving it to the database
         String encodedPassword = passwordEncoder.encode(userDto.getPassword());
 
-        User newUser = new User(userDto.getUsername(), userDto.getEmail(), encodedPassword);
+        UserDto newUser = new UserDto(userDto.getUsername(), encodedPassword);
 
-        userRepository.saveAndFlush(newUser);
+        User user = modelMapper.map(newUser, User.class);
 
-        // return a UserDtoResponse
-        return new UserDtoResponse(newUser.getId(), newUser.getUsername(), newUser.getEmail(), newUser.getUserType(), newUser.getEmployee(), newUser.getClient());
-
+        userRepository.saveAndFlush(user);
     }
 
     public UserDtoResponse setUserRole(int userId, UserType userType) {
