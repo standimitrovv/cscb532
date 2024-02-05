@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -25,7 +25,7 @@ public class User {
     @Column(nullable = false, unique = true, length = 30)
     private String email;
 
-    @Column(nullable = false, length = 32)
+    @Column(nullable = false)
     private String password;
 
     @Column(name = "user_type", columnDefinition = "ENUM('EMPLOYEE', 'CLIENT') default 'CLIENT'")

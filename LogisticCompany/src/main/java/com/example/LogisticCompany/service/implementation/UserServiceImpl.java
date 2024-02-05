@@ -1,8 +1,6 @@
 package com.example.LogisticCompany.service.implementation;
 
-import com.example.LogisticCompany.dto.shipment.ShipmentDtoResponse;
 import com.example.LogisticCompany.dto.user.*;
-import com.example.LogisticCompany.model.shipment.Shipment;
 import com.example.LogisticCompany.model.user.User;
 import com.example.LogisticCompany.model.user.UserType;
 import com.example.LogisticCompany.repository.UserRepository;
@@ -16,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -26,7 +25,7 @@ import java.util.Date;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
 
     // secret key for signing the JWT
@@ -39,9 +38,9 @@ public class UserServiceImpl implements UserService {
 
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+        this.passwordEncoder = new BCryptPasswordEncoder(16);
         this.modelMapper = new ModelMapper();
     }
 
@@ -74,14 +73,14 @@ public class UserServiceImpl implements UserService {
             throw new AuthenticationException("Username is already taken");
         }
 
-        // encode the password before saving it to the database
         String encodedPassword = passwordEncoder.encode(userDto.getPassword());
 
-        UserDto newUser = new UserDto(userDto.getUsername(), encodedPassword);
+        UserDto tempUser = new UserDto();
+        tempUser.setPassword(encodedPassword);
+        tempUser.setUsername(userDto.getUsername());
+        tempUser.setEmail(userDto.getEmail());
 
-        User user = modelMapper.map(newUser, User.class);
-
-        userRepository.saveAndFlush(user);
+        userRepository.saveAndFlush(modelMapper.map(tempUser, User.class));
     }
 
     public UserDtoResponse setUserRole(int userId, UserType userType) {
@@ -98,7 +97,6 @@ public class UserServiceImpl implements UserService {
         // create an HMAC key from the secret key bytes
         Key key = Keys.hmacShaKeyFor(jwtSecret.getBytes());
 
-        // create a JWT token
         return Jwts.builder()
                 .setSubject(username)
                 .setIssuedAt(new Date())
