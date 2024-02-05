@@ -24,7 +24,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/session")
+    @PostMapping("/login")
     public UserDtoResponse login(@RequestBody @Valid LoginUserDto userDto, HttpServletResponse response){
         try {
             return this.userService.login(userDto, response);
@@ -33,7 +33,7 @@ public class UserController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public void register(@RequestBody @Valid RegisterUserDto userDto){
         try {
             this.userService.register(userDto);
