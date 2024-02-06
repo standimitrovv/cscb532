@@ -2,6 +2,7 @@ package com.example.LogisticCompany.service.implementation;
 
 import com.example.LogisticCompany.dto.employee.EmployeeDto;
 import com.example.LogisticCompany.dto.employee.EmployeeDtoResponse;
+import com.example.LogisticCompany.dto.employee.UpdateEmployeeDto;
 import com.example.LogisticCompany.model.Client;
 import com.example.LogisticCompany.model.Office;
 import com.example.LogisticCompany.model.employee.Employee;
@@ -93,7 +94,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         this.employeeRepository.save(employee);
     }
 
-    public EmployeeDtoResponse updateEmployee(int employeeId, EmployeeDto employeeDto) {
+    public EmployeeDtoResponse updateEmployee(int employeeId, UpdateEmployeeDto employeeDto) {
         Employee e = this.employeeRepository.findById(employeeId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 

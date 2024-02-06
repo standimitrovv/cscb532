@@ -20,7 +20,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmployeeDtoResponse extends PersonDtoResponse {
+public class EmployeeDtoResponse extends BaseEmployeeDtoResponse {
     private Set<BaseShipmentDtoResponse> allCompanyShipments;
 
     private BaseLogisticCompanyDtoResponse logisticCompany;

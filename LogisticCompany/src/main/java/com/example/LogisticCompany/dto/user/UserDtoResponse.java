@@ -1,6 +1,8 @@
 package com.example.LogisticCompany.dto.user;
 
+import com.example.LogisticCompany.dto.client.BaseClientDtoResponse;
 import com.example.LogisticCompany.dto.client.ClientDtoResponse;
+import com.example.LogisticCompany.dto.employee.BaseEmployeeDtoResponse;
 import com.example.LogisticCompany.dto.employee.EmployeeDtoResponse;
 import com.example.LogisticCompany.model.Client;
 import com.example.LogisticCompany.model.employee.Employee;
@@ -24,7 +26,7 @@ public class UserDtoResponse {
 
     private UserType userType;
 
-    private EmployeeDtoResponse employee;
+    private BaseEmployeeDtoResponse employee;
 
-    private ClientDtoResponse client;
+    private BaseClientDtoResponse client;
 }

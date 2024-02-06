@@ -2,6 +2,7 @@ package com.example.LogisticCompany.controller;
 
 import com.example.LogisticCompany.dto.employee.EmployeeDto;
 import com.example.LogisticCompany.dto.employee.EmployeeDtoResponse;
+import com.example.LogisticCompany.dto.employee.UpdateEmployeeDto;
 import com.example.LogisticCompany.service.implementation.EmployeeServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class EmployeeController {
     @PutMapping("/{employeeId}")
     public EmployeeDtoResponse updateEmployee(
             @PathVariable int employeeId,
-            @RequestBody @Valid EmployeeDto employeeDto
+            @RequestBody @Valid UpdateEmployeeDto employeeDto
     ){
         return this.employeeService.updateEmployee(employeeId, employeeDto);
     }
