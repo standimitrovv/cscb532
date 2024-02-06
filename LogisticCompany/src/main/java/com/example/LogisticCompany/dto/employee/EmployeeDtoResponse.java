@@ -1,8 +1,11 @@
 package com.example.LogisticCompany.dto.employee;
 
+import com.example.LogisticCompany.dto.logisticCompany.BaseLogisticCompanyDtoResponse;
 import com.example.LogisticCompany.dto.logisticCompany.LogisticCompanyDtoResponse;
+import com.example.LogisticCompany.dto.office.BaseOfficeDtoResponse;
 import com.example.LogisticCompany.dto.office.OfficeDtoResponse;
 import com.example.LogisticCompany.dto.person.PersonDtoResponse;
+import com.example.LogisticCompany.dto.shipment.BaseShipmentDtoResponse;
 import com.example.LogisticCompany.dto.shipment.ShipmentDtoResponse;
 import com.example.LogisticCompany.dto.user.UserDtoResponse;
 import com.example.LogisticCompany.model.employee.EmployeeType;
@@ -18,12 +21,9 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeeDtoResponse extends PersonDtoResponse {
+    private Set<BaseShipmentDtoResponse> allCompanyShipments;
 
-    private EmployeeType employeeType;
+    private BaseLogisticCompanyDtoResponse logisticCompany;
 
-    private Set<ShipmentDtoResponse> allCompanyShipments;
-
-    private LogisticCompanyDtoResponse logisticCompany;
-
-    private OfficeDtoResponse office;
+    private BaseOfficeDtoResponse office;
 }

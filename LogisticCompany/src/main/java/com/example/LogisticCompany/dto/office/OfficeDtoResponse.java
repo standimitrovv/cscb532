@@ -1,13 +1,17 @@
 package com.example.LogisticCompany.dto.office;
 
+import com.example.LogisticCompany.dto.employee.BaseEmployeeDtoResponse;
 import com.example.LogisticCompany.dto.employee.EmployeeDtoResponse;
+import com.example.LogisticCompany.dto.logisticCompany.BaseLogisticCompanyDtoResponse;
 import com.example.LogisticCompany.dto.logisticCompany.LogisticCompanyDtoResponse;
+import com.example.LogisticCompany.dto.shipment.BaseShipmentDtoResponse;
 import com.example.LogisticCompany.dto.shipment.ShipmentDtoResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -15,9 +19,9 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OfficeDtoResponse extends BaseOfficeDtoResponse {
-    private Set<EmployeeDtoResponse> employees;
+    private Set<BaseEmployeeDtoResponse> employees;
 
-    private Set<ShipmentDtoResponse> shipments;
+    private Set<BaseShipmentDtoResponse> shipments;
 
-    private LogisticCompanyDtoResponse logisticCompany;
+    private BaseLogisticCompanyDtoResponse logisticCompany;
 }

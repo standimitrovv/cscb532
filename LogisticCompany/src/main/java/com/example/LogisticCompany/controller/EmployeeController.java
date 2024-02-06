@@ -30,7 +30,6 @@ public class EmployeeController {
 
     @PostMapping
     public EmployeeDtoResponse createNewEmployee(@RequestBody @Valid EmployeeDto employeeDto){
-        System.out.println(employeeDto.getFullName());
          return this.employeeService.createNewEmployee(employeeDto);
     }
 

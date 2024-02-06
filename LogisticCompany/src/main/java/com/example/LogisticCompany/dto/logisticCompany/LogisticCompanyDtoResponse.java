@@ -1,8 +1,12 @@
 package com.example.LogisticCompany.dto.logisticCompany;
 
+import com.example.LogisticCompany.dto.client.BaseClientDtoResponse;
 import com.example.LogisticCompany.dto.client.ClientDtoResponse;
+import com.example.LogisticCompany.dto.employee.BaseEmployeeDtoResponse;
 import com.example.LogisticCompany.dto.employee.EmployeeDtoResponse;
+import com.example.LogisticCompany.dto.income.BaseIncomeDtoResponse;
 import com.example.LogisticCompany.dto.income.IncomeDtoResponse;
+import com.example.LogisticCompany.dto.office.BaseOfficeDtoResponse;
 import com.example.LogisticCompany.dto.office.OfficeDtoResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,22 +19,12 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LogisticCompanyDtoResponse {
-    private int id;
+public class LogisticCompanyDtoResponse extends BaseLogisticCompanyDtoResponse {
+    private Set<BaseOfficeDtoResponse> offices;
 
-    private String name;
+    private Set<BaseIncomeDtoResponse> incomes;
 
-    private String address;
+    private Set<BaseEmployeeDtoResponse> employees;
 
-    private String email;
-
-    private String phoneNumber;
-
-    private Set<OfficeDtoResponse> offices;
-
-    private Set<IncomeDtoResponse> incomes;
-
-    private Set<EmployeeDtoResponse> employees;
-
-    private Set<ClientDtoResponse> clients;
+    private Set<BaseClientDtoResponse> clients;
 }

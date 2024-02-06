@@ -1,8 +1,10 @@
 package com.example.LogisticCompany.service.implementation;
 
-import com.example.LogisticCompany.dto.user.*;
+import com.example.LogisticCompany.dto.user.LoginUserDto;
+import com.example.LogisticCompany.dto.user.RegisterUserDto;
+import com.example.LogisticCompany.dto.user.UserDto;
+import com.example.LogisticCompany.dto.user.UserLoginDtoResponse;
 import com.example.LogisticCompany.model.user.User;
-import com.example.LogisticCompany.model.user.UserType;
 import com.example.LogisticCompany.repository.UserRepository;
 import com.example.LogisticCompany.service.UserService;
 import io.jsonwebtoken.Jwts;
@@ -76,16 +78,6 @@ public class UserServiceImpl implements UserService {
         tempUser.setEmail(userDto.getEmail());
 
         userRepository.saveAndFlush(modelMapper.map(tempUser, User.class));
-    }
-
-    public UserDtoResponse setUserRole(int userId, UserType userType) {
-        User user = this.userRepository.findById(userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        user.setUserType(userType);
-        userRepository.saveAndFlush(user);
-
-        return modelMapper.map(user, UserDtoResponse.class);
     }
 
     private String generateJwtToken(String username) {

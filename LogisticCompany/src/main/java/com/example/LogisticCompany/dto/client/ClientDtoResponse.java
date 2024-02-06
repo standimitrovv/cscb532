@@ -1,9 +1,8 @@
 package com.example.LogisticCompany.dto.client;
 
-import com.example.LogisticCompany.dto.logisticCompany.LogisticCompanyDtoResponse;
+import com.example.LogisticCompany.dto.logisticCompany.BaseLogisticCompanyDtoResponse;
 import com.example.LogisticCompany.dto.person.PersonDtoResponse;
-import com.example.LogisticCompany.dto.shipment.ShipmentDtoResponse;
-import com.example.LogisticCompany.dto.user.UserDtoResponse;
+import com.example.LogisticCompany.dto.shipment.BaseShipmentDtoResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,9 +16,9 @@ import java.util.Set;
 @NoArgsConstructor
 public class ClientDtoResponse extends PersonDtoResponse {
 
-    private Set<ShipmentDtoResponse> sentShipments;
+    private Set<BaseShipmentDtoResponse> sentShipments;
 
-    private Set<ShipmentDtoResponse> receivedShipments;
+    private Set<BaseShipmentDtoResponse> receivedShipments;
 
-    private Set<LogisticCompanyDtoResponse> companies;
+    private Set<BaseLogisticCompanyDtoResponse> companies;
 }

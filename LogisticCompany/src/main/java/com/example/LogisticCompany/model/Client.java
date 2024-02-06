@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -25,12 +26,12 @@ public class Client extends Person {
     private User user;
 
     @OneToMany(mappedBy = "sender")
-    private Set<Shipment> sentShipments;
+    private Set<Shipment> sentShipments = new HashSet<>();
 
     @OneToMany(mappedBy = "receiver")
-    private Set<Shipment> receivedShipments;
+    private Set<Shipment> receivedShipments = new HashSet<>();
 
     @JsonIgnore
     @ManyToMany(mappedBy = "clients")
-    private Set<LogisticCompany> companies;
+    private Set<LogisticCompany> companies = new HashSet<>();
 }

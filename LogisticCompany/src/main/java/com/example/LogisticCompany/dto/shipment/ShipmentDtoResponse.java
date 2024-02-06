@@ -1,7 +1,10 @@
 package com.example.LogisticCompany.dto.shipment;
 
+import com.example.LogisticCompany.dto.client.BaseClientDtoResponse;
 import com.example.LogisticCompany.dto.client.ClientDtoResponse;
+import com.example.LogisticCompany.dto.employee.BaseEmployeeDtoResponse;
 import com.example.LogisticCompany.dto.employee.EmployeeDtoResponse;
+import com.example.LogisticCompany.dto.office.BaseOfficeDtoResponse;
 import com.example.LogisticCompany.dto.office.OfficeDtoResponse;
 import com.example.LogisticCompany.model.Client;
 import com.example.LogisticCompany.model.Office;
@@ -23,28 +26,12 @@ import java.time.LocalDate;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShipmentDtoResponse {
-    private int id;
+public class ShipmentDtoResponse extends BaseShipmentDtoResponse{
+    private BaseOfficeDtoResponse office;
 
-    private String deliveryAddress;
+    private BaseClientDtoResponse sender;
 
-    private BigDecimal weight;
+    private BaseClientDtoResponse receiver;
 
-    private LocalDate createdAt;
-
-    private BigDecimal deliveryFee;
-
-    private BigDecimal shipmentCost;
-
-    private ShipmentStatus shipmentStatus;
-
-    private DeliveryType deliveryType;
-
-    private OfficeDtoResponse office;
-
-    private ClientDtoResponse sender;
-
-    private ClientDtoResponse receiver;
-
-    private EmployeeDtoResponse employee;
+    private BaseEmployeeDtoResponse employee;
 }

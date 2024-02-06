@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -29,10 +30,10 @@ public class Office {
     private String phoneNumber;
 
     @OneToMany(mappedBy = "office")
-    private Set<Employee> employees;
+    private Set<Employee> employees = new HashSet<>();
 
     @OneToMany(mappedBy = "office")
-    private Set<Shipment> shipments;
+    private Set<Shipment> shipments = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="company_id", referencedColumnName = "id", nullable = false)
