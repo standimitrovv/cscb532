@@ -30,7 +30,15 @@ public class EmployeeController {
 
     @PostMapping
     public EmployeeDtoResponse createNewEmployee(@RequestBody @Valid EmployeeDto employeeDto){
+        System.out.println(employeeDto.getFullName());
          return this.employeeService.createNewEmployee(employeeDto);
+    }
+
+    @PostMapping("/{employeeId}/users/{userId}")
+    public ResponseEntity<Void> setUser(@PathVariable int employeeId, @PathVariable int userId){
+        this.employeeService.setUser(employeeId, userId);
+
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{employeeId}")

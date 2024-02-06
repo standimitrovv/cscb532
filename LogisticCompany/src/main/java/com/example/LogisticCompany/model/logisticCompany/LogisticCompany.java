@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -36,13 +37,13 @@ public class LogisticCompany {
     private String phoneNumber;
 
     @OneToMany(mappedBy = "logisticCompany")
-    private Set<Office> offices;
+    private Set<Office> offices = new HashSet<>();
 
     @OneToMany(mappedBy = "logisticCompany")
-    private Set<Income> incomes;
+    private Set<Income> incomes = new HashSet<>();
 
     @OneToMany(mappedBy = "logisticCompany")
-    private Set<Employee> employees;
+    private Set<Employee> employees = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
@@ -50,5 +51,5 @@ public class LogisticCompany {
             joinColumns = @JoinColumn(name = "company_id"),
             inverseJoinColumns = @JoinColumn(name = "client_id")
     )
-    private Set<Client> clients;
+    private Set<Client> clients = new HashSet<>();
 }

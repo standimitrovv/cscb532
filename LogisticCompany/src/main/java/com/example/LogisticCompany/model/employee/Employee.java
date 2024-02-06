@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -25,11 +26,12 @@ public class Employee extends Person {
     @Enumerated(EnumType.STRING)
     private EmployeeType employeeType;
 
-    @OneToOne(mappedBy = "employee")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @OneToMany(mappedBy = "employee")
-    private Set<Shipment> allCompanyShipments;
+    private Set<Shipment> allCompanyShipments = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="company_id", referencedColumnName = "id", nullable = false)

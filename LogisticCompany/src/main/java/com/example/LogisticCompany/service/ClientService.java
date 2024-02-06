@@ -13,6 +13,8 @@ public interface ClientService {
 
     ClientDtoResponse createNewClient(ClientDto clientDto);
 
+    void setUser(int clientId, int userId);
+
     ClientDtoResponse updateClient(int clientId, ClientDto clientDto);
 
     void deleteClient(int clientId);

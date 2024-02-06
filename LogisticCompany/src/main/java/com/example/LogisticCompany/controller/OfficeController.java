@@ -1,5 +1,6 @@
 package com.example.LogisticCompany.controller;
 
+import com.example.LogisticCompany.dto.office.BaseOfficeDtoResponse;
 import com.example.LogisticCompany.dto.office.OfficeDto;
 import com.example.LogisticCompany.dto.office.OfficeDtoResponse;
 import com.example.LogisticCompany.service.implementation.OfficeServiceImpl;

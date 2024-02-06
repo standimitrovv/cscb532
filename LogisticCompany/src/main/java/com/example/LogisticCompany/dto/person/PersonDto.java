@@ -1,5 +1,6 @@
 package com.example.LogisticCompany.dto.person;
 
+import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@MappedSuperclass
 @Getter
 @Setter
 @AllArgsConstructor

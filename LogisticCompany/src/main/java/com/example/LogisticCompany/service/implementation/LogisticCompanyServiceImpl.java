@@ -51,10 +51,16 @@ public class LogisticCompanyServiceImpl implements LogisticCompanyService {
     }
 
     public LogisticCompanyDtoResponse createNewLogisticCompany(LogisticCompanyDto logisticCompanyDto) {
-        LogisticCompany logisticCompany = modelMapper.map(logisticCompanyDto, LogisticCompany.class);
-        this.logisticCompanyRepository.saveAndFlush(logisticCompany);
+        LogisticCompany logisticCompany = new LogisticCompany();
 
-        return modelMapper.map(logisticCompanyDto, LogisticCompanyDtoResponse.class);
+        logisticCompany.setAddress(logisticCompanyDto.getAddress());
+        logisticCompany.setEmail(logisticCompanyDto.getEmail());
+        logisticCompany.setName(logisticCompanyDto.getName());
+        logisticCompany.setPhoneNumber(logisticCompanyDto.getPhoneNumber());
+
+        this.logisticCompanyRepository.save(logisticCompany);
+
+        return modelMapper.map(logisticCompany, LogisticCompanyDtoResponse.class);
     }
 
     public LogisticCompanyDtoResponse updateLogisticCompany(int companyId, LogisticCompanyDto logisticCompanyDto) {

@@ -32,11 +32,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserType userType = UserType.CLIENT;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "employee_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "user")
     private Employee employee;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "client_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "user")
     private Client client;
 }

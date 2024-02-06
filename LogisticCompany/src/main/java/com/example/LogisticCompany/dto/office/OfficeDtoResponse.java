@@ -14,13 +14,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OfficeDtoResponse {
-    private int id;
-
-    private String address;
-
-    private String phoneNumber;
-
+public class OfficeDtoResponse extends BaseOfficeDtoResponse {
     private Set<EmployeeDtoResponse> employees;
 
     private Set<ShipmentDtoResponse> shipments;

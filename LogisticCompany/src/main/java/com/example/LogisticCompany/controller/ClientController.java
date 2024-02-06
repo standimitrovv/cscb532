@@ -33,6 +33,13 @@ public class ClientController {
         return this.clientService.createNewClient(clientDto);
     }
 
+    @PostMapping("/{clientId}/users/{userId}")
+    public ResponseEntity<Void> setUser(@PathVariable int clientId, @PathVariable int userId){
+        this.clientService.setUser(clientId, userId);
+
+        return ResponseEntity.ok().build();
+    }
+
     @PutMapping("/{clientId}")
     public ClientDtoResponse updateClient(@PathVariable int clientId, @RequestBody @Valid ClientDto clientDto) {
         return this.clientService.updateClient(clientId, clientDto);

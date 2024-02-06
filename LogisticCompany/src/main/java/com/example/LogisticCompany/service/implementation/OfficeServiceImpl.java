@@ -1,8 +1,11 @@
 package com.example.LogisticCompany.service.implementation;
 
+import com.example.LogisticCompany.dto.office.BaseOfficeDtoResponse;
 import com.example.LogisticCompany.dto.office.OfficeDto;
 import com.example.LogisticCompany.dto.office.OfficeDtoResponse;
 import com.example.LogisticCompany.model.Office;
+import com.example.LogisticCompany.model.logisticCompany.LogisticCompany;
+import com.example.LogisticCompany.repository.LogisticCompanyRepository;
 import com.example.LogisticCompany.repository.OfficeRepository;
 import com.example.LogisticCompany.service.OfficeService;
 import org.modelmapper.ModelMapper;
@@ -18,11 +21,13 @@ import java.util.stream.Collectors;
 public class OfficeServiceImpl implements OfficeService {
 
     private final OfficeRepository officeRepository;
+    private final LogisticCompanyRepository logisticCompanyRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public OfficeServiceImpl(OfficeRepository officeRepository) {
+    public OfficeServiceImpl(OfficeRepository officeRepository, LogisticCompanyRepository logisticCompanyRepository) {
         this.officeRepository = officeRepository;
+        this.logisticCompanyRepository = logisticCompanyRepository;
         this.modelMapper = new ModelMapper();
     }
 
@@ -43,10 +48,19 @@ public class OfficeServiceImpl implements OfficeService {
     }
 
     public OfficeDtoResponse createNewOffice(OfficeDto officeDto) {
-        Office office = modelMapper.map(officeDto, Office.class);
-        this.officeRepository.saveAndFlush(office);
 
-        return modelMapper.map(office, OfficeDtoResponse.class);
+        Office tempOffice = new Office();
+        tempOffice.setAddress(officeDto.getAddress());
+        tempOffice.setPhoneNumber(officeDto.getPhoneNumber());
+
+        LogisticCompany company = this.logisticCompanyRepository.findById(officeDto.getCompanyId())
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        tempOffice.setLogisticCompany(company);
+
+        this.officeRepository.save(tempOffice);
+
+        return modelMapper.map(tempOffice, OfficeDtoResponse.class);
     }
 
     public OfficeDtoResponse updateOffice(int officeId, OfficeDto officeDto) {

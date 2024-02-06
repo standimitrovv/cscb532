@@ -20,7 +20,8 @@ import java.util.Set;
 @Setter
 public class Client extends Person {
 
-    @OneToOne(mappedBy = "client")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @OneToMany(mappedBy = "sender")
