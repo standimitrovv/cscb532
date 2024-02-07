@@ -6,6 +6,7 @@ import com.example.LogisticCompany.dto.shipment.UpdateShipmentStatusDto;
 import com.example.LogisticCompany.model.Client;
 import com.example.LogisticCompany.model.Office;
 import com.example.LogisticCompany.model.employee.Employee;
+import com.example.LogisticCompany.model.logisticCompany.LogisticCompany;
 import com.example.LogisticCompany.model.shipment.DeliveryType;
 import com.example.LogisticCompany.model.shipment.Shipment;
 import com.example.LogisticCompany.model.shipment.ShipmentStatus;
@@ -19,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -76,6 +78,9 @@ public class ShipmentServiceImpl implements ShipmentService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The 'officeId' field is not provided!");
         }
 
+        LogisticCompany company = this.logisticCompanyRepository.findById(1)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "A logistic company with id: "+ 1 + " was not found"));
+
         Client sender = this.clientRepository.findById(senderId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sender with id: "+ senderId + " was not found"));
 
@@ -94,6 +99,22 @@ public class ShipmentServiceImpl implements ShipmentService {
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Office with id: "+ officeId + " was not found"));
 
             shipment.setOffice(office);
+        }
+
+        Set<Client> logisticCompanyClients = company.getClients();
+
+        boolean isSenderACurrentClient = logisticCompanyClients.stream().anyMatch(c -> c.getId() == senderId);
+        if(!isSenderACurrentClient){
+            logisticCompanyClients.add(sender);
+        }
+
+        boolean isReceiverACurrentClient = logisticCompanyClients.stream().anyMatch(c -> c.getId() == receiverId);
+        if(!isReceiverACurrentClient){
+            logisticCompanyClients.add(receiver);
+        }
+
+        if(!isSenderACurrentClient || !isReceiverACurrentClient){
+            logisticCompanyRepository.save(company);
         }
 
         shipment.setSender(sender);
