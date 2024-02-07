@@ -32,7 +32,7 @@ public class Office {
     @OneToMany(mappedBy = "office")
     private Set<Employee> employees = new HashSet<>();
 
-    @OneToMany(mappedBy = "office")
+    @OneToMany(mappedBy = "office", cascade = CascadeType.ALL)
     private Set<Shipment> shipments = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

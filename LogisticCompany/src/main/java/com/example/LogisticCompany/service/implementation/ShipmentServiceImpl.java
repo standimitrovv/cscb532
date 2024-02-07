@@ -2,8 +2,16 @@ package com.example.LogisticCompany.service.implementation;
 
 import com.example.LogisticCompany.dto.shipment.ShipmentDto;
 import com.example.LogisticCompany.dto.shipment.ShipmentDtoResponse;
+import com.example.LogisticCompany.dto.shipment.UpdateShipmentStatusDto;
+import com.example.LogisticCompany.model.Client;
+import com.example.LogisticCompany.model.Office;
+import com.example.LogisticCompany.model.employee.Employee;
+import com.example.LogisticCompany.model.shipment.DeliveryType;
 import com.example.LogisticCompany.model.shipment.Shipment;
 import com.example.LogisticCompany.model.shipment.ShipmentStatus;
+import com.example.LogisticCompany.repository.ClientRepository;
+import com.example.LogisticCompany.repository.EmployeeRepository;
+import com.example.LogisticCompany.repository.OfficeRepository;
 import com.example.LogisticCompany.repository.ShipmentRepository;
 import com.example.LogisticCompany.service.ShipmentService;
 import org.modelmapper.ModelMapper;
@@ -12,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,11 +28,17 @@ import java.util.stream.Collectors;
 public class ShipmentServiceImpl implements ShipmentService {
 
     private final ShipmentRepository shipmentRepository;
+    private final ClientRepository clientRepository;
+    private final EmployeeRepository employeeRepository;
+    private final OfficeRepository officeRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ShipmentServiceImpl(ShipmentRepository shipmentRepository) {
+    public ShipmentServiceImpl(ShipmentRepository shipmentRepository, ClientRepository clientRepository, EmployeeRepository employeeRepository, OfficeRepository officeRepository) {
         this.shipmentRepository = shipmentRepository;
+        this.clientRepository = clientRepository;
+        this.employeeRepository = employeeRepository;
+        this.officeRepository = officeRepository;
         this.modelMapper = new ModelMapper();
     }
 
@@ -44,23 +59,66 @@ public class ShipmentServiceImpl implements ShipmentService {
     }
 
     public ShipmentDtoResponse createNewShipment(ShipmentDto shipmentDto) {
-        Shipment shipment = modelMapper.map(shipmentDto, Shipment.class);
-        this.shipmentRepository.saveAndFlush(shipment);
+        int senderId = shipmentDto.getSenderId();
+        int receiverId = shipmentDto.getReceiverId();
+        int officeId = shipmentDto.getOfficeId();
+
+        if(senderId == receiverId){
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "The sender cannot be the receiver!");
+        }
+
+        if(shipmentDto.getDeliveryType() == DeliveryType.OFFICE && (officeId <= 0)){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The 'officeId' field is not provided!");
+        }
+
+        Client sender = this.clientRepository.findById(senderId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sender with id: "+ senderId + " was not found"));
+
+        Client receiver = this.clientRepository.findById(receiverId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Receiver with id: "+ receiverId + " was not found"));
+
+        Employee employee = this.employeeRepository.findById(shipmentDto.getEmployeeId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee with id: "+ shipmentDto.getEmployeeId() + " was not found"));
+
+        Shipment shipment = new Shipment();
+
+        Office office;
+
+        if(officeId > 0){
+            office = this.officeRepository.findById(officeId)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Office with id: "+ officeId + " was not found"));
+
+            shipment.setOffice(office);
+        }
+
+        shipment.setSender(sender);
+        shipment.setReceiver(receiver);
+        shipment.setCreatedByEmployee(employee);
+        shipment.setLastUpdatedByEmployee(employee);
+        shipment.setDeliveryAddress(shipmentDto.getDeliveryAddress());
+        shipment.setWeight(shipmentDto.getWeight());
+        shipment.setCreatedAt(LocalDate.now());
+        shipment.setDeliveryFee(shipmentDto.getDeliveryFee());
+        shipment.setShipmentCost(shipmentDto.getShipmentCost());
+        shipment.setShipmentStatus(ShipmentStatus.IN_PROCESS);
+        shipment.setDeliveryType(shipmentDto.getDeliveryType());
+
+        this.shipmentRepository.save(shipment);
 
         return modelMapper.map(shipment, ShipmentDtoResponse.class);
     }
 
-    public ShipmentDtoResponse updateShipment(int shipmentId, ShipmentDto shipmentDto) {
+    public ShipmentDtoResponse updateShipmentStatus(int shipmentId, UpdateShipmentStatusDto shipmentDto) {
         Shipment shipment = this.shipmentRepository.findById(shipmentId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
-        shipment.setWeight(shipmentDto.getWeight());
-        shipment.setShipmentCost(shipmentDto.getShipmentCost());
+        int employeeId = shipmentDto.getEmployeeId();
+
+        Employee employee = this.employeeRepository.findById(employeeId)
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Employee with id: " + employeeId + " was not found"));
+
         shipment.setShipmentStatus(shipmentDto.getShipmentStatus());
-        shipment.setCreatedAt(shipmentDto.getCreatedAt());
-        shipment.setDeliveryAddress(shipmentDto.getDeliveryAddress());
-        shipment.setDeliveryFee(shipmentDto.getDeliveryFee());
-        shipment.setDeliveryType(shipmentDto.getDeliveryType());
+        shipment.setLastUpdatedByEmployee(employee);
 
         Shipment updatedShipment = shipmentRepository.save(shipment);
 

@@ -21,7 +21,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmployeeDtoResponse extends BaseEmployeeDtoResponse {
-    private Set<BaseShipmentDtoResponse> allCompanyShipments;
+    private Set<BaseShipmentDtoResponse> registeredShipments;
 
     private BaseLogisticCompanyDtoResponse logisticCompany;
 

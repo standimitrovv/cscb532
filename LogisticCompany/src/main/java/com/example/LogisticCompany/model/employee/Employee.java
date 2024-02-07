@@ -30,8 +30,8 @@ public class Employee extends Person {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @OneToMany(mappedBy = "employee")
-    private Set<Shipment> allCompanyShipments = new HashSet<>();
+    @OneToMany(mappedBy = "createdByEmployee")
+    private Set<Shipment> registeredShipments = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="company_id", referencedColumnName = "id", nullable = false)

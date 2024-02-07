@@ -52,19 +52,23 @@ public class Shipment {
     @Enumerated(EnumType.STRING)
     private DeliveryType deliveryType;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name="office_id", referencedColumnName = "id")
     private Office office;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name="sender_id", referencedColumnName = "id", nullable = false)
     private Client sender;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name="receiver_id", referencedColumnName = "id", nullable = false)
     private Client receiver;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name="employee_id", referencedColumnName = "id", nullable = false)
-    private Employee employee;
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn(name="created_by_employee_id", referencedColumnName = "id", nullable = false)
+    private Employee createdByEmployee;
+
+    @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "last_updated_by_employee_id", referencedColumnName = "id", nullable = false)
+    private Employee lastUpdatedByEmployee;
 }

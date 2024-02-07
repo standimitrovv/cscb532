@@ -29,11 +29,6 @@ public class ShipmentDto {
     @Digits(integer = 2, fraction = 1, message = "The 'weight' field can have at most 3 digits before the fraction")
     private BigDecimal weight;
 
-    @NotNull(message = "The 'createdAt' field cannot be null!")
-    @DateTimeFormat(pattern = "YYYY-MM-DD")
-    @PastOrPresent(message = "The 'createdAt' field can only be in the past or in the present!")
-    private LocalDate createdAt;
-
     @NotNull(message = "The 'deliveryFee' field cannot be null!")
     @Digits(integer = 2, fraction = 2, message = "The 'deliveryFee' field can have at most 4 digits before the fraction")
     private BigDecimal deliveryFee;
@@ -48,4 +43,21 @@ public class ShipmentDto {
     @NotNull(message = "The 'deliveryType' field cannot be null!")
     @Enumerated(EnumType.STRING)
     private DeliveryType deliveryType;
+
+    @NotNull
+    @Positive
+    @Min(value = 1, message = "The 'senderId' field must be a positive integer")
+    private int senderId;
+
+    @NotNull
+    @Positive
+    @Min(value = 1, message = "The 'receiverId' field must be a positive integer")
+    private int receiverId;
+
+    @NotNull
+    @Positive
+    @Min(value = 1, message = "The 'employeeId' field must be a positive integer")
+    private int employeeId;
+
+    private int officeId;
 }

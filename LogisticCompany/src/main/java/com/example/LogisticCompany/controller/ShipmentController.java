@@ -2,6 +2,7 @@ package com.example.LogisticCompany.controller;
 
 import com.example.LogisticCompany.dto.shipment.ShipmentDto;
 import com.example.LogisticCompany.dto.shipment.ShipmentDtoResponse;
+import com.example.LogisticCompany.dto.shipment.UpdateShipmentStatusDto;
 import com.example.LogisticCompany.model.shipment.ShipmentStatus;
 import com.example.LogisticCompany.service.implementation.ShipmentServiceImpl;
 import jakarta.validation.Valid;
@@ -29,9 +30,9 @@ public class ShipmentController {
     * */
     @GetMapping
     public List<ShipmentDtoResponse> getAllShipments(
-            @RequestParam(name = "employeeId", required = false) int employeeId,
+            @RequestParam(name = "employeeId", required = false, defaultValue = "0") int employeeId,
             @RequestParam(name = "shipmentStatus", required = false) ShipmentStatus shipmentStatus,
-            @RequestParam(name = "clientId", required = false) int clientId
+            @RequestParam(name = "clientId", required = false, defaultValue = "0") int clientId
     ){
         return this.shipmentService.getAllShipments(employeeId, shipmentStatus, clientId);
     }
@@ -46,12 +47,12 @@ public class ShipmentController {
         return this.shipmentService.createNewShipment(shipmentDto);
     }
 
-    @PutMapping("/{shipmentId}")
-    public ShipmentDtoResponse updateShipment(
+    @PatchMapping("/{shipmentId}")
+    public ShipmentDtoResponse updateShipmentStatus(
             @PathVariable int shipmentId,
-            @RequestBody @Valid ShipmentDto shipmentDto
+            @RequestBody @Valid UpdateShipmentStatusDto shipmentDto
     ){
-        return this.shipmentService.updateShipment(shipmentId, shipmentDto);
+        return this.shipmentService.updateShipmentStatus(shipmentId, shipmentDto);
     }
 
     @DeleteMapping("/{shipmentId}")

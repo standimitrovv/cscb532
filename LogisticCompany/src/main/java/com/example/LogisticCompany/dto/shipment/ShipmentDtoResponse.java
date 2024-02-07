@@ -33,5 +33,7 @@ public class ShipmentDtoResponse extends BaseShipmentDtoResponse{
 
     private BaseClientDtoResponse receiver;
 
-    private BaseEmployeeDtoResponse employee;
+    private BaseEmployeeDtoResponse createdByEmployee;
+
+    private BaseEmployeeDtoResponse lastUpdatedByEmployee;
 }
