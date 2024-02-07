@@ -65,8 +65,8 @@ public class Shipment {
     private Client receiver;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    @JoinColumn(name="created_by_employee_id", referencedColumnName = "id", nullable = false)
-    private Employee createdByEmployee;
+    @JoinColumn(name="registered_by_employee_id", referencedColumnName = "id", nullable = false)
+    private Employee registeredByEmployee;
 
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
     @JoinColumn(name = "last_updated_by_employee_id", referencedColumnName = "id", nullable = false)

@@ -30,7 +30,7 @@ public class Employee extends Person {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    @OneToMany(mappedBy = "createdByEmployee")
+    @OneToMany(mappedBy = "registeredByEmployee")
     private Set<Shipment> registeredShipments = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

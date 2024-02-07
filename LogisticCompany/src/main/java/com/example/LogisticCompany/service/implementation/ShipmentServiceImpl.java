@@ -119,7 +119,7 @@ public class ShipmentServiceImpl implements ShipmentService {
 
         shipment.setSender(sender);
         shipment.setReceiver(receiver);
-        shipment.setCreatedByEmployee(employee);
+        shipment.setRegisteredByEmployee(employee);
         shipment.setLastUpdatedByEmployee(employee);
         shipment.setDeliveryAddress(shipmentDto.getDeliveryAddress());
         shipment.setWeight(shipmentDto.getWeight());
