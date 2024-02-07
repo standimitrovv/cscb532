@@ -2,6 +2,7 @@ package com.example.LogisticCompany.service.implementation;
 
 import com.example.LogisticCompany.dto.client.ClientDto;
 import com.example.LogisticCompany.dto.client.ClientDtoResponse;
+import com.example.LogisticCompany.dto.client.UpdateClientDto;
 import com.example.LogisticCompany.dto.employee.EmployeeDtoResponse;
 import com.example.LogisticCompany.model.Client;
 import com.example.LogisticCompany.model.employee.Employee;
@@ -73,7 +74,7 @@ public class ClientServiceImpl implements ClientService {
         this.clientRepository.save(client);
     }
 
-    public ClientDtoResponse updateClient(int clientId, ClientDto clientDto) {
+    public ClientDtoResponse updateClient(int clientId, UpdateClientDto clientDto) {
         Client c = this.clientRepository.findById(clientId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 

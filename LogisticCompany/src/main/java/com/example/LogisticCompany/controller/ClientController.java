@@ -2,6 +2,7 @@ package com.example.LogisticCompany.controller;
 
 import com.example.LogisticCompany.dto.client.ClientDto;
 import com.example.LogisticCompany.dto.client.ClientDtoResponse;
+import com.example.LogisticCompany.dto.client.UpdateClientDto;
 import com.example.LogisticCompany.service.implementation.ClientServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,7 @@ public class ClientController {
     }
 
     @PutMapping("/{clientId}")
-    public ClientDtoResponse updateClient(@PathVariable int clientId, @RequestBody @Valid ClientDto clientDto) {
+    public ClientDtoResponse updateClient(@PathVariable int clientId, @RequestBody @Valid UpdateClientDto clientDto) {
         return this.clientService.updateClient(clientId, clientDto);
     }
 

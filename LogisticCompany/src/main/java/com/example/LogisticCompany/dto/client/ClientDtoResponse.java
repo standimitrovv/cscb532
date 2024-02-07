@@ -14,7 +14,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClientDtoResponse extends PersonDtoResponse {
+public class ClientDtoResponse extends BaseClientDtoResponse {
 
     private Set<BaseShipmentDtoResponse> sentShipments;
 
