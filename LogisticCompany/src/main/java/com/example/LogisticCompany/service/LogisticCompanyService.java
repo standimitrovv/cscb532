@@ -16,6 +16,4 @@ public interface LogisticCompanyService {
     LogisticCompanyDtoResponse createNewLogisticCompany(LogisticCompanyDto logisticCompanyDto);
 
     LogisticCompanyDtoResponse updateLogisticCompany(int companyId, LogisticCompanyDto logisticCompanyDto);
-
-    void deleteLogisticCompany(int companyId);
 }

@@ -76,11 +76,4 @@ public class LogisticCompanyServiceImpl implements LogisticCompanyService {
 
         return modelMapper.map(updatedCompany, LogisticCompanyDtoResponse.class);
     }
-
-    public void deleteLogisticCompany(int companyId) {
-        LogisticCompany company = this.logisticCompanyRepository.findById(companyId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-        this.logisticCompanyRepository.delete(company);
-    }
 }

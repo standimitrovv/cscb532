@@ -9,10 +9,7 @@ import com.example.LogisticCompany.model.employee.Employee;
 import com.example.LogisticCompany.model.shipment.DeliveryType;
 import com.example.LogisticCompany.model.shipment.Shipment;
 import com.example.LogisticCompany.model.shipment.ShipmentStatus;
-import com.example.LogisticCompany.repository.ClientRepository;
-import com.example.LogisticCompany.repository.EmployeeRepository;
-import com.example.LogisticCompany.repository.OfficeRepository;
-import com.example.LogisticCompany.repository.ShipmentRepository;
+import com.example.LogisticCompany.repository.*;
 import com.example.LogisticCompany.service.ShipmentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +28,22 @@ public class ShipmentServiceImpl implements ShipmentService {
     private final ClientRepository clientRepository;
     private final EmployeeRepository employeeRepository;
     private final OfficeRepository officeRepository;
+    private final LogisticCompanyRepository logisticCompanyRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ShipmentServiceImpl(ShipmentRepository shipmentRepository, ClientRepository clientRepository, EmployeeRepository employeeRepository, OfficeRepository officeRepository) {
+    public ShipmentServiceImpl(
+            ShipmentRepository shipmentRepository,
+            ClientRepository clientRepository,
+            EmployeeRepository employeeRepository,
+            OfficeRepository officeRepository,
+            LogisticCompanyRepository logisticCompanyRepository
+    ) {
         this.shipmentRepository = shipmentRepository;
         this.clientRepository = clientRepository;
         this.employeeRepository = employeeRepository;
         this.officeRepository = officeRepository;
+        this.logisticCompanyRepository = logisticCompanyRepository;
         this.modelMapper = new ModelMapper();
     }
 

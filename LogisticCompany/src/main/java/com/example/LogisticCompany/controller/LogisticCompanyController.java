@@ -61,11 +61,4 @@ public class LogisticCompanyController {
     ){
         return this.logisticCompanyService.updateLogisticCompany(companyId, logisticCompanyDto);
     };
-
-    @DeleteMapping("/{companyId}")
-    public ResponseEntity<String> deleteLogisticCompany(@PathVariable int companyId){
-        this.logisticCompanyService.deleteLogisticCompany(companyId);
-
-        return ResponseEntity.ok("Company with id: '" + companyId + "' was successfully deleted!");
-    };
 }
