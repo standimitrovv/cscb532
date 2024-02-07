@@ -3,6 +3,7 @@ package com.example.LogisticCompany.service.implementation;
 import com.example.LogisticCompany.dto.office.BaseOfficeDtoResponse;
 import com.example.LogisticCompany.dto.office.OfficeDto;
 import com.example.LogisticCompany.dto.office.OfficeDtoResponse;
+import com.example.LogisticCompany.dto.office.UpdateOfficeDto;
 import com.example.LogisticCompany.model.Office;
 import com.example.LogisticCompany.model.logisticCompany.LogisticCompany;
 import com.example.LogisticCompany.repository.LogisticCompanyRepository;
@@ -63,7 +64,7 @@ public class OfficeServiceImpl implements OfficeService {
         return modelMapper.map(tempOffice, OfficeDtoResponse.class);
     }
 
-    public OfficeDtoResponse updateOffice(int officeId, OfficeDto officeDto) {
+    public OfficeDtoResponse updateOffice(int officeId, UpdateOfficeDto officeDto) {
         Office office = this.officeRepository.findById(officeId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 

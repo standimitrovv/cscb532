@@ -3,6 +3,7 @@ package com.example.LogisticCompany.controller;
 import com.example.LogisticCompany.dto.office.BaseOfficeDtoResponse;
 import com.example.LogisticCompany.dto.office.OfficeDto;
 import com.example.LogisticCompany.dto.office.OfficeDtoResponse;
+import com.example.LogisticCompany.dto.office.UpdateOfficeDto;
 import com.example.LogisticCompany.service.implementation.OfficeServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class OfficeController {
     @PutMapping("/{officeId}")
     public OfficeDtoResponse updateOffice(
             @PathVariable int officeId,
-            @RequestBody @Valid OfficeDto officeDto
+            @RequestBody @Valid UpdateOfficeDto officeDto
     ){
         return this.officeService.updateOffice(officeId, officeDto);
     }
