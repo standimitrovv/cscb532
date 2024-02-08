@@ -22,6 +22,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ShipmentServiceImpl implements ShipmentService {
@@ -50,12 +51,17 @@ public class ShipmentServiceImpl implements ShipmentService {
     }
 
     public List<ShipmentDtoResponse> getAllShipments(int employeeId, ShipmentStatus shipmentStatus, int clientId) {
-        List<Shipment> shipments = this.shipmentRepository.findAll();
+        Stream<Shipment> shipments = this.shipmentRepository.findAll().stream();
 
-        return shipments
-                .stream()
-                .map(sh -> modelMapper.map(sh, ShipmentDtoResponse.class))
-                .collect(Collectors.toList());
+        boolean isAnExistingEmployee = this.employeeRepository.existsById(employeeId);
+
+        if(employeeId > 0 && isAnExistingEmployee){
+            return this.convertShipmentListToDtoResponse(
+                    shipments.filter(sh -> sh.getRegisteredByEmployee().getId() == employeeId)
+            );
+        }
+
+        return this.convertShipmentListToDtoResponse(shipments);
     }
 
     public ShipmentDtoResponse getShipment(int shipmentId) {
@@ -156,5 +162,11 @@ public class ShipmentServiceImpl implements ShipmentService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
         this.shipmentRepository.delete(shipment);
+    }
+
+    private List<ShipmentDtoResponse> convertShipmentListToDtoResponse(Stream<Shipment> shipments){
+        return shipments
+                .map(sh -> modelMapper.map(sh, ShipmentDtoResponse.class))
+                .collect(Collectors.toList());
     }
 }
