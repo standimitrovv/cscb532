@@ -66,7 +66,11 @@ public class ShipmentServiceImpl implements ShipmentService {
             return this.convertShipmentListToDtoResponse(shipments.filter(sh -> sh.getShipmentStatus() == shipmentStatus));
         }
 
-        return this.convertShipmentListToDtoResponse(shipments);
+        if(employeeId == 0 && shipmentStatus == null && clientId == 0){
+            return this.convertShipmentListToDtoResponse(shipments);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_IMPLEMENTED);
+        }
     }
 
     public ShipmentDtoResponse getShipment(int shipmentId) {
