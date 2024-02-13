@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useAuth } from '../features/auth/hooks/UseAuth';
 
 export const Navbar = () => {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
 
@@ -37,6 +37,7 @@ export const Navbar = () => {
                 className='text-gray-700 block px-4 py-2 text-sm'
                 role='menuitem'
                 id='menu-item-0'
+                onClick={signOut}
               >
                 Sign out
               </a>

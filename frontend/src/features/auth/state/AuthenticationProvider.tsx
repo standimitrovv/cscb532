@@ -24,6 +24,7 @@ interface AuthContext {
   openSignInPage: () => void;
   signIn: ISignIn;
   signUp: ISignUp;
+  signOut: () => void;
 }
 
 const INITIAL_VALUES: AuthContext = {
@@ -35,6 +36,7 @@ const INITIAL_VALUES: AuthContext = {
   openSignInPage: () => {},
   signIn: async () => {},
   signUp: async () => {},
+  signOut: () => {},
 };
 
 export const AuthenticationContext = createContext<AuthContext>(INITIAL_VALUES);
@@ -118,6 +120,12 @@ export const AuthenticationProvider: React.FunctionComponent<Props> = ({
     [openSignInPage]
   );
 
+  const signOut = useCallback(() => {
+    Cookies.remove('user');
+
+    setUser(undefined);
+  }, []);
+
   useEffect(() => {
     const stringifiedCookiesUser = Cookies.get('user');
 
@@ -137,6 +145,7 @@ export const AuthenticationProvider: React.FunctionComponent<Props> = ({
     openSignInPage,
     signIn,
     signUp,
+    signOut,
   };
 
   const isLoggedIn = useMemo(() => user?.token, [user]);
