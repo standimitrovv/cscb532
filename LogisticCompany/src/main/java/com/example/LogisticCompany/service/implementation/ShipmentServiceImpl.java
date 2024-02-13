@@ -61,11 +61,6 @@ public class ShipmentServiceImpl implements ShipmentService {
             );
         }
 
-        // "0" is the default value for the employeeId and clientId params
-        if(employeeId == 0 && clientId == 0 && shipmentStatus != null) {
-            return this.convertShipmentListToDtoResponse(shipments.filter(sh -> sh.getShipmentStatus() == shipmentStatus));
-        }
-
         if(employeeId == 0 && shipmentStatus == null && clientId == 0){
             return this.convertShipmentListToDtoResponse(shipments);
         } else {
