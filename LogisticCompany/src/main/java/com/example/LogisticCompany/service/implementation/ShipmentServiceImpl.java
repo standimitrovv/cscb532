@@ -71,7 +71,7 @@ public class ShipmentServiceImpl implements ShipmentService {
         if(clientId > 0 && isAnExistingClient && shipmentStatus != null){
             return this.convertShipmentListToDtoResponse(
                     shipments.filter(sh -> {
-                        if(shipmentStatus == ShipmentStatus.COMPLETED){
+                        if(shipmentStatus == ShipmentStatus.COMPLETED || shipmentStatus == ShipmentStatus.IN_TRANSIT){
                             return sh.getReceiver().getId() == clientId;
                         }
 
