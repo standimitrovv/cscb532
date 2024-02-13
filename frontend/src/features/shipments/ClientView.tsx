@@ -25,12 +25,6 @@ const tabs: Tabs[] = [
   },
 ];
 
-const activeTabToShipmentStatusMap: Record<Tab, Shipment['shipmentStatus']> = {
-  Sent: 'IN_PROCESS',
-  Expected: 'SENT' || 'IN_TRANSIT',
-  Received: 'COMPLETED',
-};
-
 export const ClientView = () => {
   const { user } = useAuth();
 
@@ -40,18 +34,29 @@ export const ClientView = () => {
 
   useEffect(() => {
     (async () => {
-      if (!user) {
-        return;
+      const res = await getAllShipments();
+
+      if (res.ok) {
+        setShipments(await res.json());
       }
-
-      const shipments = await getAllShipments({
-        userId: user?.id,
-        shipmentStatus: activeTabToShipmentStatusMap[activeTab],
-      });
-
-      setShipments(shipments);
     })();
-  }, [activeTab, user]);
+  }, []);
+
+  if (!user?.person?.id) {
+    return null;
+  }
+
+  const { sentShipments, expectedShipments, receivedShipments } =
+    distributeShipmentsByType(shipments, user.person.id);
+
+  const shipmentsToMap =
+    activeTab === 'Sent'
+      ? sentShipments
+      : activeTab === 'Expected'
+      ? expectedShipments
+      : activeTab === 'Received'
+      ? receivedShipments
+      : [];
 
   return (
     <div>
@@ -69,7 +74,7 @@ export const ClientView = () => {
       </div>
 
       <div className='grid grid-cols-1 justify-items-center gap-4 md:grid-cols-2 lg:grid-cols-3 lg:justify-items-start 2xl:grid-cols-4'>
-        {shipments.map((shipment) => (
+        {shipmentsToMap.map((shipment) => (
           <Shipment
             key={shipment.id}
             isSelf={shipment.sender.id === user?.id}
@@ -79,6 +84,24 @@ export const ClientView = () => {
       </div>
     </div>
   );
+};
+
+const distributeShipmentsByType = (shipments: Shipment[], userId: number) => {
+  const sentShipments = shipments.filter((sh) => sh.sender.id === userId);
+
+  const expectedShipments = shipments.filter(
+    (sh) => sh.receiver.id === userId && sh.shipmentStatus !== 'COMPLETED'
+  );
+
+  const receivedShipments = shipments.filter(
+    (sh) => sh.receiver.id === userId && sh.shipmentStatus === 'COMPLETED'
+  );
+
+  return {
+    sentShipments,
+    expectedShipments,
+    receivedShipments,
+  };
 };
 
 const Tab: React.FunctionComponent<{

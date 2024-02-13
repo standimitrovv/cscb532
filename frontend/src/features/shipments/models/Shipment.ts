@@ -1,3 +1,5 @@
+import { Person } from '../../../models/Person';
+
 export interface Shipment {
   id: number;
   createdAt: string;
@@ -12,13 +14,6 @@ export interface Shipment {
   sender: Client;
   registeredByEmployee: Employee;
   lastUpdatedByEmployee: Employee;
-}
-
-interface Person {
-  id: number;
-  email: string;
-  fullName: string;
-  phoneNumber: string;
 }
 
 interface Client extends Person {}
