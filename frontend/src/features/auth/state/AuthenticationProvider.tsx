@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { AuthenticationPage } from '../AuthenticationPage';
 import { SignInModel, signInRequest } from '../api/Login';
-import { SignUpModel } from '../api/Register';
+import { SignUpModel, signUpRequest } from '../api/Register';
 import { User } from '../models/User';
 
 export type ISignIn = (model: SignInModel) => Promise<void>;
@@ -65,10 +65,10 @@ export const AuthenticationProvider: React.FunctionComponent<Props> = ({
     defaultProcessingAndErrorMessageStates();
   };
 
-  const openSignInPage = () => {
+  const openSignInPage = useCallback(() => {
     setIsRegistered(true);
     defaultProcessingAndErrorMessageStates();
-  };
+  }, []);
 
   const defaultProcessingAndErrorMessageStates = () => {
     setIsProcessing(INITIAL_VALUES.isProcessing);
@@ -98,16 +98,25 @@ export const AuthenticationProvider: React.FunctionComponent<Props> = ({
     }
   }, []);
 
-  const signUp = useCallback(async () => {
-    setIsProcessing(true);
-    try {
-      // TODO:
-    } catch (err) {
-      // TODO:
-    } finally {
-      setIsProcessing(false);
-    }
-  }, []);
+  const signUp = useCallback(
+    async (model: SignUpModel) => {
+      setIsProcessing(true);
+      try {
+        const result = await signUpRequest(model);
+
+        if (!result.ok) {
+          return;
+        }
+
+        openSignInPage();
+      } catch (err) {
+        // TODO:
+      } finally {
+        setIsProcessing(false);
+      }
+    },
+    [openSignInPage]
+  );
 
   useEffect(() => {
     const stringifiedCookiesUser = Cookies.get('user');
