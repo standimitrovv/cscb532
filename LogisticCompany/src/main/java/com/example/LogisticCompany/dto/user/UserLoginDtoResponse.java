@@ -1,5 +1,6 @@
 package com.example.LogisticCompany.dto.user;
 
+import com.example.LogisticCompany.dto.person.BasePersonDtoResponse;
 import com.example.LogisticCompany.model.user.UserType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,4 +21,6 @@ public class UserLoginDtoResponse {
     private UserType userType;
 
     private String token;
+
+    private BasePersonDtoResponse person;
 }

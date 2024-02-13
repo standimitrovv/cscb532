@@ -1,10 +1,15 @@
 package com.example.LogisticCompany.service.implementation;
 
+import com.example.LogisticCompany.dto.person.BasePersonDtoResponse;
 import com.example.LogisticCompany.dto.user.LoginUserDto;
 import com.example.LogisticCompany.dto.user.RegisterUserDto;
 import com.example.LogisticCompany.dto.user.UserDto;
 import com.example.LogisticCompany.dto.user.UserLoginDtoResponse;
+import com.example.LogisticCompany.model.Client;
+import com.example.LogisticCompany.model.employee.Employee;
 import com.example.LogisticCompany.model.user.User;
+import com.example.LogisticCompany.repository.ClientRepository;
+import com.example.LogisticCompany.repository.EmployeeRepository;
 import com.example.LogisticCompany.repository.UserRepository;
 import com.example.LogisticCompany.service.UserService;
 import io.jsonwebtoken.Jwts;
@@ -25,6 +30,8 @@ import java.util.Date;
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final ClientRepository clientRepository;
+    private final EmployeeRepository employeeRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
 
@@ -38,8 +45,10 @@ public class UserServiceImpl implements UserService {
 
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, ClientRepository clientRepository, EmployeeRepository employeeRepository) {
         this.userRepository = userRepository;
+        this.clientRepository = clientRepository;
+        this.employeeRepository = employeeRepository;
         this.passwordEncoder = new BCryptPasswordEncoder(16);
         this.modelMapper = new ModelMapper();
     }
@@ -56,10 +65,32 @@ public class UserServiceImpl implements UserService {
 
         UserLoginDtoResponse tempLoginDtoResponse = new UserLoginDtoResponse();
 
+        tempLoginDtoResponse.setId(user.getId());
         tempLoginDtoResponse.setUsername(user.getUsername());
         tempLoginDtoResponse.setToken(token);
         tempLoginDtoResponse.setEmail(user.getEmail());
         tempLoginDtoResponse.setUserType(user.getUserType());
+
+        Client client = clientRepository.findClientByUserId(user.getId());
+        if(client != null){
+            BasePersonDtoResponse tempPerson = new BasePersonDtoResponse();
+            tempPerson.setId(client.getId());
+            tempPerson.setEmail(client.getEmail());
+            tempPerson.setFullName(client.getFullName());
+            tempPerson.setPhoneNumber(client.getPhoneNumber());
+
+            tempLoginDtoResponse.setPerson(tempPerson);
+        }
+
+        Employee employee = employeeRepository.findEmployeeByUserId(user.getId());
+        if(employee != null){
+            BasePersonDtoResponse tempPerson = new BasePersonDtoResponse();
+            tempPerson.setId(employee.getId());
+            tempPerson.setEmail(employee.getEmail());
+            tempPerson.setFullName(employee.getFullName());
+            tempPerson.setPhoneNumber(employee.getPhoneNumber());
+            tempLoginDtoResponse.setPerson(tempPerson);
+        }
 
         return tempLoginDtoResponse;
     }
