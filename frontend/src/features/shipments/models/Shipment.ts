@@ -7,7 +7,7 @@ export interface Shipment {
   shipmentCost: number;
   shipmentStatus: 'IN_PROCESS' | 'SENT' | 'IN_TRANSIT' | 'COMPLETED';
   weight: number;
-  office: Office;
+  office?: Office;
   receiver: Client;
   sender: Client;
   registeredByEmployee: Employee;

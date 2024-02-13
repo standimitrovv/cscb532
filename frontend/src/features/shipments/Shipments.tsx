@@ -15,12 +15,5 @@ export const Shipments = () => {
     return null;
   }
 
-  {
-    /**
-     * user.userType === Client ? Sent shipments, Received Shipments, Expected Shipments
-     *
-     * user.userType === Employee ? All shipments
-     */
-  }
   return <div className='p-2 my-4'>{view[user.userType]}</div>;
 };

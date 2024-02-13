@@ -26,8 +26,8 @@ const tabs: Tabs[] = [
 ];
 
 const activeTabToShipmentStatusMap: Record<Tab, Shipment['shipmentStatus']> = {
-  Sent: 'IN_PROCESS' || 'SENT',
-  Expected: 'IN_TRANSIT',
+  Sent: 'IN_PROCESS',
+  Expected: 'SENT' || 'IN_TRANSIT',
   Received: 'COMPLETED',
 };
 
@@ -68,9 +68,15 @@ export const ClientView = () => {
         </ul>
       </div>
 
-      {shipments.map((shipment) => (
-        <Shipment key={shipment.id} shipment={shipment} />
-      ))}
+      <div className='grid grid-cols-1 justify-items-center gap-4 md:grid-cols-2 lg:grid-cols-3 lg:justify-items-start 2xl:grid-cols-4'>
+        {shipments.map((shipment) => (
+          <Shipment
+            key={shipment.id}
+            isSelf={shipment.sender.id === user?.id}
+            shipment={shipment}
+          />
+        ))}
+      </div>
     </div>
   );
 };
@@ -96,8 +102,76 @@ const Tab: React.FunctionComponent<{
   );
 };
 
-const Shipment: React.FunctionComponent<{ shipment: Shipment }> = ({
-  shipment,
-}) => {
-  return <div>{shipment.shipmentStatus}</div>;
+type ShipmentStatus = 'Pending' | 'Out for delivery' | 'Delivered';
+
+const shipmentStatusMap: Record<Shipment['shipmentStatus'], ShipmentStatus> = {
+  IN_PROCESS: 'Pending',
+  SENT: 'Out for delivery',
+  IN_TRANSIT: 'Out for delivery',
+  COMPLETED: 'Delivered',
+};
+
+const Shipment: React.FunctionComponent<{
+  shipment: Shipment;
+  isSelf: boolean;
+}> = ({ shipment, isSelf }) => {
+  const shipmentStatus = shipmentStatusMap[shipment.shipmentStatus];
+
+  const shipmentStatusTextStyle =
+    shipmentStatus === 'Pending'
+      ? 'text-red-600 bg-red-100'
+      : shipmentStatus === 'Delivered'
+      ? 'text-green-600 bg-green-100'
+      : shipmentStatus === 'Out for delivery'
+      ? 'text-orange-600 bg-orange-100'
+      : '';
+
+  return (
+    <div className='w-80 h-fit border rounded-lg'>
+      <div className='flex justify-between items-center border-b p-3'>
+        <span className='font-bold'>#{shipment.id}</span>
+        <span
+          className={`border p-2 rounded-lg font-semibold ${shipmentStatusTextStyle}`}
+        >
+          {shipmentStatus}
+        </span>
+      </div>
+      <div className='flex flex-col border-b p-3'>
+        <div className='mb-3 flex flex-col'>
+          <span className='text-slate-600 text-sm'>Sender:</span>
+          <span className='text-md font-semibold'>
+            {isSelf ? 'You' : shipment.sender.fullName}
+          </span>
+        </div>
+        <div className='mb-3 flex flex-col'>
+          <span className='text-slate-600 text-sm'>Destination Address:</span>
+          <span className='text-md font-semibold'>
+            {shipment.deliveryAddress}
+          </span>
+        </div>
+        <span className='text-slate-600 text-sm'>Created At:</span>
+        <span className='text-md font-semibold'>{shipment.createdAt}</span>
+      </div>
+      <div className='p-3 flex flex-col gap-1'>
+        <div>
+          <span className='text-slate-600 text-sm'>Weight:</span>
+          <span className='text-md font-semibold ml-2'>
+            {shipment.weight} KG
+          </span>
+        </div>
+        <div>
+          <span className='text-slate-600 text-sm'>Shipment Cost:</span>
+          <span className='text-md font-semibold ml-2'>
+            {shipment.shipmentCost} BGN
+          </span>
+        </div>
+        <div>
+          <span className='text-slate-600 text-sm'>Delivery Fee:</span>
+          <span className='text-md font-semibold ml-2'>
+            {shipment.deliveryFee} BGN
+          </span>
+        </div>
+      </div>
+    </div>
+  );
 };
