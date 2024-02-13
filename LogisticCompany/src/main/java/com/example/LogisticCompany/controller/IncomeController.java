@@ -2,6 +2,7 @@ package com.example.LogisticCompany.controller;
 
 import com.example.LogisticCompany.dto.income.IncomeDto;
 import com.example.LogisticCompany.dto.income.IncomeDtoResponse;
+import com.example.LogisticCompany.dto.income.UpdateIncomeDto;
 import com.example.LogisticCompany.service.implementation.IncomeServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class IncomeController {
     @PutMapping("/{incomeId}")
     public IncomeDtoResponse updateIncome(
             @PathVariable int incomeId,
-            @RequestBody @Valid IncomeDto incomeDto
+            @RequestBody @Valid UpdateIncomeDto incomeDto
     ){
         return this.incomeService.updateIncome(incomeId, incomeDto);
     }

@@ -2,6 +2,7 @@ package com.example.LogisticCompany.service.implementation;
 
 import com.example.LogisticCompany.dto.income.IncomeDto;
 import com.example.LogisticCompany.dto.income.IncomeDtoResponse;
+import com.example.LogisticCompany.dto.income.UpdateIncomeDto;
 import com.example.LogisticCompany.model.Income;
 import com.example.LogisticCompany.model.logisticCompany.LogisticCompany;
 import com.example.LogisticCompany.repository.IncomeRepository;
@@ -75,7 +76,7 @@ public class IncomeServiceImpl implements IncomeService {
         return modelMapper.map(income, IncomeDtoResponse.class);
     }
 
-    public IncomeDtoResponse updateIncome(int incomeId, IncomeDto incomeDto) {
+    public IncomeDtoResponse updateIncome(int incomeId, UpdateIncomeDto incomeDto) {
         Income income = this.incomeRepository.findById(incomeId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
