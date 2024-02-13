@@ -3,11 +3,7 @@ export interface SignInModel {
   password: string;
 }
 
-interface SignInResponse {}
-
-export const signInRequest = async (
-  req: SignInModel
-): Promise<SignInResponse> =>
+export const signInRequest = async (req: SignInModel) =>
   await fetch(`${import.meta.env.VITE_API}/users/login`, {
     method: 'POST',
     body: JSON.stringify(req),

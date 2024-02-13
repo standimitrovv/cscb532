@@ -1,14 +1,22 @@
-import { createContext, useCallback, useState } from 'react';
+import Cookies from 'js-cookie';
+import {
+  createContext,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { AuthenticationPage } from '../AuthenticationPage';
 import { SignInModel, signInRequest } from '../api/Login';
 import { SignUpModel } from '../api/Register';
+import { User } from '../models/User';
 
 export type ISignIn = (model: SignInModel) => Promise<void>;
 
 export type ISignUp = (model: SignUpModel) => Promise<void>;
 
 interface AuthContext {
-  // user?: User
+  user?: User;
   isRegistered: boolean;
   isProcessing: boolean;
   errorMessage: string;
@@ -19,7 +27,7 @@ interface AuthContext {
 }
 
 const INITIAL_VALUES: AuthContext = {
-  // user: undefined,
+  user: undefined,
   isRegistered: true,
   isProcessing: false,
   errorMessage: '',
@@ -42,9 +50,7 @@ export const AuthenticationProvider: React.FunctionComponent<Props> = ({
     INITIAL_VALUES.isRegistered
   );
 
-  // const [user, setUser] = useState<LoginResponse | undefined>(
-  //   DEFAULT_STATE_VALUES.USER
-  // );
+  const [user, setUser] = useState<User | undefined>(INITIAL_VALUES.user);
 
   const [isProcessing, setIsProcessing] = useState<boolean>(
     INITIAL_VALUES.isProcessing
@@ -54,18 +60,39 @@ export const AuthenticationProvider: React.FunctionComponent<Props> = ({
     INITIAL_VALUES.errorMessage
   );
 
-  const openSignUpPage = () => setIsRegistered(false);
+  const openSignUpPage = () => {
+    setIsRegistered(false);
+    defaultProcessingAndErrorMessageStates();
+  };
 
-  const openSignInPage = () => setIsRegistered(true);
+  const openSignInPage = () => {
+    setIsRegistered(true);
+    defaultProcessingAndErrorMessageStates();
+  };
+
+  const defaultProcessingAndErrorMessageStates = () => {
+    setIsProcessing(INITIAL_VALUES.isProcessing);
+    setErrorMessage(INITIAL_VALUES.errorMessage);
+  };
 
   const signIn = useCallback(async (model: SignInModel) => {
     setIsProcessing(true);
     try {
-      // TODO:
       const res = await signInRequest(model);
-      console.log(res);
+
+      if (!res.ok) {
+        setErrorMessage('Incorrect username or password');
+
+        return;
+      }
+
+      const user: User = await res.json();
+
+      setUser(user);
+
+      Cookies.set('user', JSON.stringify(user), { expires: 1 });
     } catch (err) {
-      // TODO:
+      // TODO
     } finally {
       setIsProcessing(false);
     }
@@ -82,6 +109,16 @@ export const AuthenticationProvider: React.FunctionComponent<Props> = ({
     }
   }, []);
 
+  useEffect(() => {
+    const stringifiedCookiesUser = Cookies.get('user');
+
+    if (!stringifiedCookiesUser?.trim()) {
+      return;
+    }
+
+    setUser(JSON.parse(stringifiedCookiesUser));
+  }, []);
+
   const authContext: AuthContext = {
     isRegistered,
     isProcessing,
@@ -92,7 +129,7 @@ export const AuthenticationProvider: React.FunctionComponent<Props> = ({
     signUp,
   };
 
-  const isLoggedIn = false;
+  const isLoggedIn = useMemo(() => user?.token, [user]);
 
   return (
     <AuthenticationContext.Provider value={authContext}>

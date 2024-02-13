@@ -3,20 +3,24 @@ import { useAuth } from './hooks/UseAuth';
 import { ISignIn } from './state/AuthenticationProvider';
 
 export const SignInPage: React.FunctionComponent = () => {
-  const { signIn, openSignUpPage, isProcessing } = useAuth();
+  const { signIn, openSignUpPage, isProcessing, errorMessage } = useAuth();
 
   return (
     <>
       <h2 className='text-3xl font-semibold mb-2'>Sign in</h2>
-      <span>Hi, welcome back! 👋</span>
+      <h3>Hi, welcome back! 👋</h3>
 
-      <SignInForm onSubmit={signIn} isProcessing={isProcessing} />
+      <SignInForm
+        onSubmit={signIn}
+        isProcessing={isProcessing}
+        errorMessage={errorMessage}
+      />
 
       <div className='flex justify-center mt-2'>
         <span>Not registered yet?</span>
         <div
           className='flex items-center cursor-pointer group'
-          onClick={openSignUpPage}
+          onClick={!isProcessing ? openSignUpPage : undefined}
         >
           <span className='text-blue-600 mx-1'>Create an account</span>
           <svg
@@ -43,7 +47,8 @@ export const SignInPage: React.FunctionComponent = () => {
 const SignInForm: React.FunctionComponent<{
   onSubmit: ISignIn;
   isProcessing: boolean;
-}> = ({ onSubmit, isProcessing }) => {
+  errorMessage: string;
+}> = ({ onSubmit, isProcessing, errorMessage }) => {
   const [username, setUsername] = useState<string>('');
 
   const [password, setPassword] = useState<string>('');
@@ -51,19 +56,25 @@ const SignInForm: React.FunctionComponent<{
   const isSubmitButtonDisabled =
     !username.trim().length || !password.trim().length || isProcessing;
 
+  const hasErrorMessage = errorMessage.trim().length > 0;
+
   const handleFormSubmit = () => {
     onSubmit({ username, password });
   };
 
   return (
     <form className='flex flex-col mt-8' onSubmit={(e) => e.preventDefault()}>
+      {hasErrorMessage && <span className='text-red-500'>{errorMessage}</span>}
+
       <label htmlFor='username' className='font-medium'>
         Username
       </label>
       <input
         type='username'
         id='username'
-        className='rounded-md py-2 px-3 border mt-1 mb-4'
+        className={`rounded-md py-2 px-3 border mt-1 mb-4 ${
+          hasErrorMessage && 'border-red-500'
+        }`}
         placeholder='E.g johndoe'
         disabled={isProcessing}
         required
@@ -77,7 +88,9 @@ const SignInForm: React.FunctionComponent<{
       <input
         type='password'
         id='password'
-        className='rounded-md py-2 px-3 border mt-1 mb-6'
+        className={`rounded-md py-2 px-3 border mt-1 mb-6 ${
+          hasErrorMessage && 'border-red-500'
+        }`}
         placeholder='Enter your password'
         value={password}
         onChange={(e) => setPassword(e.target.value)}
