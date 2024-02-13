@@ -1,6 +1,6 @@
 import { Person } from '../../../models/Person';
 
-export interface Shipment {
+export interface IShipment {
   id: number;
   createdAt: string;
   deliveryAddress: string;
