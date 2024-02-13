@@ -16,7 +16,7 @@ export type ISignIn = (model: SignInModel) => Promise<void>;
 export type ISignUp = (model: SignUpModel) => Promise<void>;
 
 interface AuthContext {
-  user?: User;
+  user: User | undefined;
   isRegistered: boolean;
   isProcessing: boolean;
   errorMessage: string;
@@ -129,6 +129,7 @@ export const AuthenticationProvider: React.FunctionComponent<Props> = ({
   }, []);
 
   const authContext: AuthContext = {
+    user,
     isRegistered,
     isProcessing,
     errorMessage,

@@ -1,10 +1,13 @@
+import { Navbar } from './components/Navbar';
 import { AuthenticationProvider } from './features/auth/state/AuthenticationProvider';
 
 export const App: React.FunctionComponent = () => {
   return (
     <main>
       <AuthenticationProvider>
-        <div>Hello world! You are logged in!</div>
+        <body className='p-2'>
+          <Navbar />
+        </body>
       </AuthenticationProvider>
     </main>
   );
