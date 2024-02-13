@@ -2,7 +2,6 @@ package com.example.LogisticCompany.service.implementation;
 
 import com.example.LogisticCompany.dto.logisticCompany.LogisticCompanyDto;
 import com.example.LogisticCompany.dto.logisticCompany.LogisticCompanyDtoResponse;
-import com.example.LogisticCompany.model.logisticCompany.FilterType;
 import com.example.LogisticCompany.model.logisticCompany.LogisticCompany;
 import com.example.LogisticCompany.repository.LogisticCompanyRepository;
 import com.example.LogisticCompany.service.LogisticCompanyService;
@@ -12,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -36,14 +34,7 @@ public class LogisticCompanyServiceImpl implements LogisticCompanyService {
                 .collect(Collectors.toList());
     }
 
-    public LogisticCompanyDtoResponse getLogisticCompany(
-            int companyId,
-            FilterType filterType,
-            LocalDate fromDate,
-            LocalDate toDate
-    ) {
-        // TODO: implement the filtering
-
+    public LogisticCompanyDtoResponse getLogisticCompany(int companyId) {
         LogisticCompany company = this.logisticCompanyRepository.findById(companyId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
